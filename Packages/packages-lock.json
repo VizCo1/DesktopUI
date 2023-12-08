@@ -1,5 +1,13 @@
 {
   "dependencies": {
+    "com.programadorcastellano.centralisedui": {
+      "version": "file:D:/Descargas/CentralisedUI-main",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.unity.textmeshpro": "3.0.6"
+      }
+    },
     "com.unity.2d.animation": {
       "version": "9.0.3",
       "depth": 1,
