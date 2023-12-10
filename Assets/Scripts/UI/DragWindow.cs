@@ -12,7 +12,7 @@ public class DragWindow : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoint
 
     public void OnDrag(PointerEventData eventData)
     {
-        _windowRectTransform.anchoredPosition += eventData.delta;
+        _windowRectTransform.anchoredPosition += eventData.delta / GameController.Instance.GetMainCanvas().scaleFactor;
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -22,6 +22,7 @@ public class DragWindow : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoint
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        _windowRectTransform.SetAsLastSibling();
         Cursor.lockState = CursorLockMode.Confined;
     }
 }

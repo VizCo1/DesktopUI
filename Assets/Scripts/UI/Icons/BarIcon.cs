@@ -26,27 +26,27 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
 
     public void OnDrag(PointerEventData eventData)
     {
-        _rectTransform.anchoredPosition += new Vector2(eventData.delta.x, 0);     
+        _rectTransform.anchoredPosition += new Vector2(eventData.delta.x / GameController.Instance.GetMainCanvas().scaleFactor, 0);     
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        BottomBar.Instance.IsMovingIcon = false;
+        BottomBarUI.Instance.IsMovingIcon = false;
         FixIconPosition(transform, _iconPos);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (BottomBar.Instance.IsMovingIcon && this != BottomBar.Instance.GetMovingIcon())
+        if (BottomBarUI.Instance.IsMovingIcon && this != BottomBarUI.Instance.GetMovingIcon())
         {
-            SwapPosWith(BottomBar.Instance.GetMovingIcon());
+            SwapPosWith(BottomBarUI.Instance.GetMovingIcon());
         }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        BottomBar.Instance.IsMovingIcon = true;
-        BottomBar.Instance.SetMovingIcon(this);
+        BottomBarUI.Instance.IsMovingIcon = true;
+        BottomBarUI.Instance.SetMovingIcon(this);
         transform.SetAsFirstSibling();
     }
 
