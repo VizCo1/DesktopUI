@@ -8,6 +8,8 @@ using UnityEngine.InputSystem;
 
 public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerEnterHandler, IPointerDownHandler
 {
+    [SerializeField] private BarUI _barUI;
+
     private RectTransform _rectTransform;
     private Vector2 _iconPos;
 
@@ -31,22 +33,22 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        BottomBarUI.Instance.IsMovingIcon = false;
+        _barUI.IsMovingIcon = false;
         FixIconPosition(transform, _iconPos);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (BottomBarUI.Instance.IsMovingIcon && this != BottomBarUI.Instance.GetMovingIcon())
+        if (_barUI.IsMovingIcon && this != _barUI.GetMovingIcon())
         {
-            SwapPosWith(BottomBarUI.Instance.GetMovingIcon());
+            SwapPosWith(_barUI.GetMovingIcon());
         }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        BottomBarUI.Instance.IsMovingIcon = true;
-        BottomBarUI.Instance.SetMovingIcon(this);
+        _barUI.IsMovingIcon = true;
+        _barUI.SetMovingIcon(this);
         transform.SetAsFirstSibling();
     }
 

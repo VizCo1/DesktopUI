@@ -5,17 +5,11 @@ using UnityEngine;
 using VInspector;
 using static UnityEditor.PlayerSettings;
 
-public class BottomBarUI : IconHolderSpace
+public class BarUI : IconHolderSpace
 {
     private static BarIcon _movingIcon;
-    public static BottomBarUI Instance { get; private set; }
 
     public bool IsMovingIcon { get; set; }
-
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     protected override void InitializeSpace()
     {

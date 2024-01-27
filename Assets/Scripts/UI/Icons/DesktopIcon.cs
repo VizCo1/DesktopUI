@@ -7,6 +7,8 @@ using VInspector;
 
 public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
 {
+    [SerializeField] private DesktopUI _desktopUI;
+
     private RectTransform _rectTransform;
     private Vector2 _prevPos;
 
@@ -28,21 +30,21 @@ public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoin
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (DesktopUI.Instance.IsClosestPositionFree(_rectTransform.position))
+        if (_desktopUI.IsClosestPositionFree(_rectTransform.position))
         {
-            FixIconPosition(DesktopUI.Instance.FindProperPosition(_rectTransform.position));
-            DesktopUI.Instance.SwapIconPositionStatus(gameObject, _prevPos);
+            FixIconPosition(_desktopUI.FindProperPosition(_rectTransform.position));
+            _desktopUI.SwapIconPositionStatus(gameObject, _prevPos);
         }
         else
         {
-            FixIconPosition(DesktopUI.Instance.FindProperPosition(_prevPos));
+            FixIconPosition(_desktopUI.FindProperPosition(_prevPos));
         }
     }
 
     [Button]
     public void Remove()
     {
-        DesktopUI.Instance.RemoveIcon(gameObject);
+        _desktopUI.RemoveIcon(gameObject);
     }
 
     public void OnPointerDown(PointerEventData eventData)

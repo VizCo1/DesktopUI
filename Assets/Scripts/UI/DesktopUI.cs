@@ -10,14 +10,6 @@ public class DesktopUI : IconHolderSpace
 {
     private KeyPosition[] _verticalKeyPositions;
 
-    //private static DesktopIcon _movingIcon;
-    public static DesktopUI Instance { get; private set; }
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
     protected override void InitializeSpace()
     {
         _iconPositions = new IconPosition[_rows * _columns];
