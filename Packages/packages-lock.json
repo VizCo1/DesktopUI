@@ -1,12 +1,13 @@
 {
   "dependencies": {
     "com.programadorcastellano.centralisedui": {
-      "version": "file:D:/Descargas/CentralisedUI-main",
+      "version": "https://github.com/Sadrmm/CentralisedUI.git",
       "depth": 0,
-      "source": "local",
+      "source": "git",
       "dependencies": {
         "com.unity.textmeshpro": "3.0.6"
-      }
+      },
+      "hash": "b2eea3acc598bb77dfba3e1e19c4ea15e979d99e"
     },
     "com.unity.2d.animation": {
       "version": "9.0.3",
