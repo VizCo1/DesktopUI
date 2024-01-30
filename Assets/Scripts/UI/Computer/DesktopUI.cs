@@ -24,7 +24,7 @@ public class DesktopUI : IconHolderSpace
         {
             for (int x = 0; x < _rows; x++)
             {
-                Vector2 pos = initialPos + new Vector2(width * x, height * -y) * GameController.Instance.GetMainCanvas().scaleFactor;
+                Vector2 pos = initialPos + new Vector2(width * x, height * -y) * ComputerControllerUI.Instance.GetMainCanvas().scaleFactor;
                 int index = y * _rows + x;
                 _iconPositions[index] = new IconPosition(pos, false);
 
@@ -40,23 +40,19 @@ public class DesktopUI : IconHolderSpace
     }
 
     [Button]
-    public override void AddIcon()
+    public override GameObject AddIcon()
     {
         GameObject iconGO = Instantiate(_iconTemplate, _iconContainer);
         if (iconGO.TryGetComponent(out DesktopIcon component))
         {
             component.Init(GetAvailableStartingPosition());
+            return iconGO;
         }
         else
         {
             Debug.LogError("Icon template does not have DesktopIcon component");
+            return null;
         }
-    }
-
-    public override void RemoveIcon(GameObject icon)
-    {
-        SetIconPositionStatus(icon, false);
-        Destroy(icon);
     }
 
     public override int FindProperIndex(Vector2 iconPos)

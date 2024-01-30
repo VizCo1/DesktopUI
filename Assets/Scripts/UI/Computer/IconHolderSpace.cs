@@ -76,9 +76,8 @@ public class IconHolderSpace : MonoBehaviour
         }
     }
 
-    public virtual void AddIcon() { }
-    public virtual void RemoveIcon(GameObject icon) { }
+    public virtual GameObject AddIcon() { Debug.LogError("Function was not implemented"); return null; }
     public virtual int FindProperIndex(Vector2 iconPos) { return default; }
 
-    public void SetIconPositionStatus(GameObject icon, bool setter) => _iconPositions[(FindProperIndex(icon.transform.position))].IsOccupied = setter;    
+    public void SetIconPositionStatusWithGO(GameObject icon, bool setter) => _iconPositions[(FindProperIndex(icon.transform.position))].IsOccupied = setter;    
 }

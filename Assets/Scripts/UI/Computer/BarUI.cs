@@ -3,13 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VInspector;
+using VInspector.Libs;
 using static UnityEditor.PlayerSettings;
 
 public class BarUI : IconHolderSpace
 {
     private static BarIcon _movingIcon;
 
+    private Pool _iconPool;
+    private List<BarIcon> _barIcons;
+
     public bool IsMovingIcon { get; set; }
+
+
+    private void Awake()
+    {
+        _iconPool = GetComponent<Pool>();
+        _barIcons = new List<BarIcon>();
+    }
 
     protected override void InitializeSpace()
     {
@@ -23,7 +34,7 @@ public class BarUI : IconHolderSpace
         {
             for (int x = 0; x < _rows; x++)
             {
-                Vector2 pos = initialPos + new Vector2(width * x, height * -y) * GameController.Instance.GetMainCanvas().scaleFactor;
+                Vector2 pos = initialPos + new Vector2(width * x, height * -y) * ComputerControllerUI.Instance.GetMainCanvas().scaleFactor;
                 _iconPositions[y * (int)width + x] = new IconPosition(pos, false);
             }
         }
@@ -31,32 +42,59 @@ public class BarUI : IconHolderSpace
         _iconTemplate.SetActive(false);
     }
 
-    [Button]
-    public override void AddIcon()
+    public override GameObject AddIcon()
     {
-        GameObject iconGO = Instantiate(_iconTemplate, _iconContainer);
+        // Reuse or create new icon
+        if (!_iconPool.TryDequeue(out GameObject iconGO))
+        {
+            iconGO = _iconPool.CreateGameObject();
+        }
+
         if (iconGO.TryGetComponent(out BarIcon component))
         {
+            _barIcons.Add(component);
+            iconGO.SetActive(true);
             component.Init(GetAvailableStartingPosition());
+            return iconGO;
         }
         else
         {
             Debug.LogError("Icon template does not have BarIcon component");
+            return null;
         }
     }
 
-    public override void RemoveIcon(GameObject icon)
+    public void RemoveIcon(BarIcon icon)
     {
-        // When removing an icon all the other icons on the right side will move one position to the left
-        SetIconPositionStatus(icon, false);
-        Destroy(icon);
+        SetIconPositionStatusWithGO(icon.gameObject, false);
+        icon.gameObject.SetActive(false);
+        _iconPool.Enqueue(icon.gameObject);        
+    }
+
+    public void FixAllPositions(BarIcon icon)
+    {
+        for (int i = 1; i < _barIcons.Count; i++)
+        {
+            if (!_iconPositions[i - 1].IsOccupied && _iconPositions[i].IsOccupied)
+            {
+                // Exchange occupied status
+                _iconPositions[i].IsOccupied = false;
+                _iconPositions[i - 1].IsOccupied = true;
+
+                // Move icon to the free position
+                _barIcons[i].FixIconPosition(_iconPositions[i - 1].Position);
+                _barIcons[i].SetIconPos(_iconPositions[i - 1].Position);
+            }
+        }
+
+        _barIcons.Remove(icon);
     }
 
     public override int FindProperIndex(Vector2 iconPos)
     {
         float smallestDistance = float.MaxValue;
         int bestIndex = -1;
-        for (int i = 0; i <= _iconPositions.Length; i++)
+        for (int i = 0; i < _iconPositions.Length; i++)
         {
             float distance = Vector2.Distance(iconPos, _iconPositions[i].Position);
             if (distance < smallestDistance)

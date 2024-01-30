@@ -5,17 +5,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerEnterHandler, IPointerDownHandler
 {
     [SerializeField] private BarUI _barUI;
 
+    private Button _icon;
     private RectTransform _rectTransform;
     private Vector2 _iconPos;
 
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
+        _icon = GetComponent<Button>();
+    }
+
+    private void Start()
+    {
+        _icon.onClick.AddListener(() => ComputerControllerUI.Instance.HandleBarIconClicked(this));
+    }
+
+    private void OnDestroy()
+    {
+        _icon.onClick.RemoveAllListeners();
     }
 
     public void Init(Vector2 pos)
@@ -25,16 +38,15 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
         gameObject.SetActive(true);
     }
 
-
     public void OnDrag(PointerEventData eventData)
     {
-        _rectTransform.anchoredPosition += new Vector2(eventData.delta.x / GameController.Instance.GetMainCanvas().scaleFactor, 0);     
+        _rectTransform.anchoredPosition += new Vector2(eventData.delta.x / ComputerControllerUI.Instance.GetMainCanvas().scaleFactor, 0);     
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         _barUI.IsMovingIcon = false;
-        FixIconPosition(transform, _iconPos);
+        FixIconPosition(_iconPos);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -57,12 +69,12 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
         Vector2 tempIconPos = _iconPos;
         _iconPos = movingIcon.GetIconPos();
         movingIcon.SetIconPos(tempIconPos);
-        FixIconPosition(transform, _iconPos);
+        FixIconPosition(_iconPos);
     }
 
-    public void FixIconPosition(Transform icon, Vector2 pos)
+    public void FixIconPosition(Vector2 pos)
     {
-        icon.DOMove(pos, 0.25f);
+        transform.DOMove(pos, 0.25f);
     }
 
     public Vector2 GetIconPos() => _iconPos;

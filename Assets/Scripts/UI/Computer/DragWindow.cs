@@ -12,7 +12,7 @@ public class DragWindow : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoint
 
     public void OnDrag(PointerEventData eventData)
     {
-        _windowRectTransform.anchoredPosition += eventData.delta / GameController.Instance.GetMainCanvas().scaleFactor;
+        _windowRectTransform.anchoredPosition += eventData.delta / ComputerControllerUI.Instance.GetMainCanvas().scaleFactor;
     }
 
     public void OnPointerUp(PointerEventData eventData)

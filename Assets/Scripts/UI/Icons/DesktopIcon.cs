@@ -5,12 +5,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using VInspector;
 
-public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
+public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler, IPointerClickHandler
 {
     [SerializeField] private DesktopUI _desktopUI;
 
     private RectTransform _rectTransform;
     private Vector2 _prevPos;
+
+    private Vector2 _cursorPos;
+    private int _clicksToOpen;
 
     private void Awake()
     {
@@ -25,7 +28,8 @@ public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoin
 
     public void OnDrag(PointerEventData eventData)
     {
-        _rectTransform.anchoredPosition += eventData.delta / GameController.Instance.GetMainCanvas().scaleFactor;
+        //_clicksToOpen = 0;
+        _rectTransform.anchoredPosition += eventData.delta / ComputerControllerUI.Instance.GetMainCanvas().scaleFactor;
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -41,12 +45,6 @@ public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoin
         }
     }
 
-    [Button]
-    public void Remove()
-    {
-        _desktopUI.RemoveIcon(gameObject);
-    }
-
     public void OnPointerDown(PointerEventData eventData)
     {
         _prevPos = transform.position;
@@ -56,5 +54,17 @@ public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoin
     public void FixIconPosition(Vector2 pos)
     {
         transform.DOMove(pos, 0.25f);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // Check prev position and actual position
+        // Check how many seconds have passed from the last click
+        //if (++_clicksToOpen == 2)
+        //{
+        //    _clicksToOpen = 0;
+        //    ComputerControllerUI.Instance.HandleDesktopIconClicked(this);
+        //}
+        ComputerControllerUI.Instance.HandleDesktopIconClicked(this);
     }
 }

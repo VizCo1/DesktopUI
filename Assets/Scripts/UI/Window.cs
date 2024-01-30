@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using MoreMountains.Feedbacks;
+using DG.Tweening;
 
 public class Window : MonoBehaviour
 {
@@ -13,32 +14,37 @@ public class Window : MonoBehaviour
     [SerializeField] private Button _minimizeButton;
     [SerializeField] private MMF_Player _closingFeedbacks;
     [SerializeField] private MMF_Player _minimizingFeedbacks;
-
-    //public event Action OnWindowOpened; // Called by the icon
-    //public event Action OnWindowClosed; // Called by the close window button
     
-    private void OnEnable()
+    private void Start()
     {
-        _closeButton.onClick.AddListener(() => { _closingFeedbacks.PlayFeedbacks(); /*OnWindowClosed?.Invoke();*/ });
+        _closeButton.onClick.AddListener(() => 
+        { 
+            _closingFeedbacks.PlayFeedbacks();
+            DOVirtual.DelayedCall(_closingFeedbacks.TotalDuration + 0.1f, () => ComputerControllerUI.Instance.CloseWindow(this));
+        });
         _minimizeButton.onClick.AddListener(() => 
         {
-            // Reuse this Feedback to minimize y maximize the window
-            if (_minimizingFeedbacks.Direction == MMFeedbacks.Directions.TopToBottom)
-            {
-                _minimizingFeedbacks.Direction = MMFeedbacks.Directions.BottomToTop;
-            }
-            else
-            {
-                _minimizingFeedbacks.Direction = MMFeedbacks.Directions.TopToBottom;
-            }
-
+            ComputerControllerUI.Instance.SetIsDesktopState();
+            _minimizingFeedbacks.Direction = MMFeedbacks.Directions.TopToBottom;
             _minimizingFeedbacks.PlayFeedbacks(); 
         });
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         _closeButton.onClick.RemoveAllListeners();
         _minimizeButton.onClick.RemoveAllListeners();
+    }
+
+    public void Open()
+    {
+        _minimizingFeedbacks.Direction = MMFeedbacks.Directions.BottomToTop;
+        _minimizingFeedbacks.PlayFeedbacks();
+    }
+
+    public void ToDefault()
+    {
+        gameObject.SetActive(false);
+        GetComponent<CanvasGroup>().alpha = 1f;
     }
 }
