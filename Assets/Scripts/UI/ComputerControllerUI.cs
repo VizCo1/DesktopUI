@@ -129,6 +129,12 @@ public class ComputerControllerUI : MonoBehaviour
             {
                 return;
             }
+            // Update current app icons
+            else
+            {
+                _currentApplicationIcons.DesktopIcon = appInfo.DesktopIcon;
+                _currentApplicationIcons.BarIcon = barIcon;
+            }
         }
 
         // Icon has a window
@@ -194,8 +200,7 @@ public class ComputerControllerUI : MonoBehaviour
 
         _windowsUI.WindowPool.Enqueue(window.gameObject);
 
-        _barUI.RemoveIcon(_currentApplicationIcons.BarIcon);
-        _barUI.FixAllPositions(_currentApplicationIcons.BarIcon);
+        _barUI.FixPositionsAndRemoveIcon(_currentApplicationIcons.BarIcon);
 
         // Remove from dictionaries
         _desktopIconAppInfoDictionary.Remove(_currentApplicationIcons.DesktopIcon);

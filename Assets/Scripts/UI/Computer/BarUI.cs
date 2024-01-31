@@ -64,14 +64,12 @@ public class BarUI : IconHolderSpace
         }
     }
 
-    public void RemoveIcon(BarIcon icon)
+    public void FixPositionsAndRemoveIcon(BarIcon icon)
     {
+        // Update status of the icon's position
         SetIconPositionStatusWithGO(icon.gameObject, false);
-        _iconPool.Enqueue(icon.gameObject);        
-    }
 
-    public void FixAllPositions(BarIcon icon)
-    {
+        // Fix positions
         for (int i = 1; i < _barIconsList.Count; i++)
         {
             if (!_iconPositions[i - 1].IsOccupied && _iconPositions[i].IsOccupied)
@@ -86,6 +84,8 @@ public class BarUI : IconHolderSpace
             }
         }
 
+        // Remove icon
+        _iconPool.Enqueue(icon.gameObject);
         _barIconsList.Remove(icon);
     }
 
