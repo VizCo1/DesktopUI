@@ -11,7 +11,7 @@ public class BarUI : IconHolderSpace
     private static BarIcon _movingIcon;
 
     private Pool _iconPool;
-    private List<BarIcon> _barIcons;
+    private List<BarIcon> _barIconsList;
 
     public bool IsMovingIcon { get; set; }
 
@@ -19,7 +19,7 @@ public class BarUI : IconHolderSpace
     private void Awake()
     {
         _iconPool = GetComponent<Pool>();
-        _barIcons = new List<BarIcon>();
+        _barIconsList = new List<BarIcon>();
     }
 
     protected override void InitializeSpace()
@@ -50,11 +50,11 @@ public class BarUI : IconHolderSpace
             iconGO = _iconPool.CreateGameObject();
         }
 
-        if (iconGO.TryGetComponent(out BarIcon component))
+        if (iconGO.TryGetComponent(out BarIcon barIcon))
         {
-            _barIcons.Add(component);
+            _barIconsList.Add(barIcon);
             iconGO.SetActive(true);
-            component.Init(GetAvailableStartingPosition());
+            barIcon.Init(GetAvailableStartingPosition());
             return iconGO;
         }
         else
@@ -67,13 +67,12 @@ public class BarUI : IconHolderSpace
     public void RemoveIcon(BarIcon icon)
     {
         SetIconPositionStatusWithGO(icon.gameObject, false);
-        icon.gameObject.SetActive(false);
         _iconPool.Enqueue(icon.gameObject);        
     }
 
     public void FixAllPositions(BarIcon icon)
     {
-        for (int i = 1; i < _barIcons.Count; i++)
+        for (int i = 1; i < _barIconsList.Count; i++)
         {
             if (!_iconPositions[i - 1].IsOccupied && _iconPositions[i].IsOccupied)
             {
@@ -82,12 +81,12 @@ public class BarUI : IconHolderSpace
                 _iconPositions[i - 1].IsOccupied = true;
 
                 // Move icon to the free position
-                _barIcons[i].FixIconPosition(_iconPositions[i - 1].Position);
-                _barIcons[i].SetIconPos(_iconPositions[i - 1].Position);
+                _barIconsList[i].FixIconPosition(_iconPositions[i - 1].Position);
+                _barIconsList[i].SetIconPos(_iconPositions[i - 1].Position);
             }
         }
 
-        _barIcons.Remove(icon);
+        _barIconsList.Remove(icon);
     }
 
     public override int FindProperIndex(Vector2 iconPos)

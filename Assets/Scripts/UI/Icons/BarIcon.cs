@@ -1,4 +1,5 @@
 using DG.Tweening;
+using MoreMountains.Feedbacks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ using UnityEngine.UI;
 public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerEnterHandler, IPointerDownHandler
 {
     [SerializeField] private BarUI _barUI;
+    [SerializeField] private MMF_Player _clickedFeedbacks;
+    [SerializeField] private MMF_Player _appearedFeedbacks;
 
     private Button _icon;
     private RectTransform _rectTransform;
@@ -23,7 +26,14 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
 
     private void Start()
     {
-        _icon.onClick.AddListener(() => ComputerControllerUI.Instance.HandleBarIconClicked(this));
+        _icon.onClick.AddListener(() =>
+        {
+            if (_iconPos == new Vector2(transform.position.x, transform.position.y))
+            {
+                ComputerControllerUI.Instance.HandleBarIconClicked(this); 
+                PlayClickedFeedbacks();
+            }
+        });
     }
 
     private void OnDestroy()
@@ -79,4 +89,21 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
 
     public Vector2 GetIconPos() => _iconPos;
     public void SetIconPos(Vector2 pos) => _iconPos = pos;
+
+    public void PlayClickedFeedbacks()
+    {
+        _clickedFeedbacks.PlayFeedbacks();
+    }
+
+    public void PlayAppearedFeedbacks(MMFeedbacks.Directions direction)
+    {
+        _appearedFeedbacks.Direction = direction;
+        _appearedFeedbacks.PlayFeedbacks();
+    }
+
+    public void PlayAppearedFeedbacksAndDisable(MMFeedbacks.Directions direction)
+    {
+        PlayAppearedFeedbacks(direction);
+        DOVirtual.DelayedCall(_appearedFeedbacks.TotalDuration + 0.1f, () => gameObject.SetActive(false));
+    }
 }

@@ -11,9 +11,8 @@ public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoin
 
     private RectTransform _rectTransform;
     private Vector2 _prevPos;
-
-    private Vector2 _cursorPos;
-    private int _clicksToOpen;
+    int _clicksToOpen = 2;
+    int _clicks = 0;
 
     private void Awake()
     {
@@ -28,7 +27,6 @@ public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoin
 
     public void OnDrag(PointerEventData eventData)
     {
-        //_clicksToOpen = 0;
         _rectTransform.anchoredPosition += eventData.delta / ComputerControllerUI.Instance.GetMainCanvas().scaleFactor;
     }
 
@@ -58,13 +56,20 @@ public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoin
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        // Check prev position and actual position
-        // Check how many seconds have passed from the last click
-        //if (++_clicksToOpen == 2)
-        //{
-        //    _clicksToOpen = 0;
-        //    ComputerControllerUI.Instance.HandleDesktopIconClicked(this);
-        //}
-        ComputerControllerUI.Instance.HandleDesktopIconClicked(this);
+        if (_prevPos == new Vector2(transform.position.x, transform.position.y))
+        {
+            if (++_clicks == _clicksToOpen)
+            {
+                ComputerControllerUI.Instance.HandleDesktopIconClicked(this);
+                _clicks = 0;
+            }
+
+            float delay = 0.5f;
+            DOVirtual.DelayedCall(delay, () => _clicks = 0);
+        }
+        else
+        {
+            _clicks = 0;
+        }
     }
 }

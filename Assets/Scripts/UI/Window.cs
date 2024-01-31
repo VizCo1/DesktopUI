@@ -18,15 +18,12 @@ public class Window : MonoBehaviour
     private void Start()
     {
         _closeButton.onClick.AddListener(() => 
-        { 
-            _closingFeedbacks.PlayFeedbacks();
-            DOVirtual.DelayedCall(_closingFeedbacks.TotalDuration + 0.1f, () => ComputerControllerUI.Instance.CloseWindow(this));
+        {
+            Close();
         });
         _minimizeButton.onClick.AddListener(() => 
         {
-            ComputerControllerUI.Instance.SetIsDesktopState();
-            _minimizingFeedbacks.Direction = MMFeedbacks.Directions.TopToBottom;
-            _minimizingFeedbacks.PlayFeedbacks(); 
+            Minimize();          
         });
     }
 
@@ -38,7 +35,22 @@ public class Window : MonoBehaviour
 
     public void Open()
     {
+        transform.SetAsLastSibling();
         _minimizingFeedbacks.Direction = MMFeedbacks.Directions.BottomToTop;
+        _minimizingFeedbacks.PlayFeedbacks();
+    }
+
+    private void Close()
+    {
+        _closingFeedbacks.PlayFeedbacks();
+        ComputerControllerUI.Instance.CloseWindowEffects();
+        DOVirtual.DelayedCall(_closingFeedbacks.TotalDuration + 0.1f, () => ComputerControllerUI.Instance.CloseWindow(this));
+    }
+
+    public void Minimize()
+    {
+        ComputerControllerUI.Instance.SetIsDesktopState();
+        _minimizingFeedbacks.Direction = MMFeedbacks.Directions.TopToBottom;
         _minimizingFeedbacks.PlayFeedbacks();
     }
 

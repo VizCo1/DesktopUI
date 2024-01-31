@@ -1,3 +1,4 @@
+using MoreMountains.Feedbacks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,9 +39,10 @@ public class ComputerControllerUI : MonoBehaviour
     private Dictionary<BarIcon, ApplicationInformation> _barIconAppInfoDictionary = new Dictionary<BarIcon, ApplicationInformation>();
 
     private Canvas _mainCanvas;
-    private Pool _windowPool;
+    //private Pool _windowPool;
 
     [SerializeField] private BarUI _barUI;
+    [SerializeField] private WindowsUI _windowsUI;
     
     private ApplicationIcons _currentApplicationIcons;
 
@@ -55,13 +57,7 @@ public class ComputerControllerUI : MonoBehaviour
 
         Instance = this;
         _mainCanvas = GetComponent<Canvas>();
-        _windowPool = GetComponent<Pool>();
         _currentApplicationIcons = new ApplicationIcons();
-    }
-
-    private void Update()
-    {
-        //Debug.Log(_state.ToString());
     }
 
     #region Handle Icon Clicked
@@ -87,7 +83,7 @@ public class ComputerControllerUI : MonoBehaviour
             OpenWindowWithDesktopIcon(desktopIcon);
         }
         // Icon does not have a window
-        else if (_windowPool.TryDequeue(out GameObject windowGO))
+        else if (_windowsUI.WindowPool.TryDequeue(out GameObject windowGO))
         {
             Window window = windowGO.GetComponent<Window>();
 
@@ -110,7 +106,7 @@ public class ComputerControllerUI : MonoBehaviour
             _currentApplicationIcons.BarIcon = _barUI.AddIcon().GetComponent<BarIcon>();
 
             // Create new window
-            Window window = _windowPool.CreateGameObject().GetComponent<Window>();
+            Window window = _windowsUI.WindowPool.CreateGameObject().GetComponent<Window>();
 
             // Add to dictionaries
             ApplicationInformation appInfo = new ApplicationInformation(desktopIcon, _currentApplicationIcons.BarIcon, window);
@@ -123,17 +119,23 @@ public class ComputerControllerUI : MonoBehaviour
 
     public void HandleBarIconClicked(BarIcon barIcon)
     {
-        // Icons can open a window when in desktop
-        if (!IsDesktopState())
+
+        if (IsWindowState() && _barIconAppInfoDictionary.TryGetValue(_currentApplicationIcons.BarIcon, out ApplicationInformation appInfo))
         {
-            return;
+            appInfo.Window.Minimize();
+
+            // Same icons, just minimize the window
+            if (barIcon == _currentApplicationIcons.BarIcon)
+            {
+                return;
+            }
         }
 
         // Icon has a window
         if (_barIconAppInfoDictionary.ContainsKey(barIcon))
         {
             // Since it has a window, the value is in the dictionary
-            _barIconAppInfoDictionary.TryGetValue(barIcon, out var appInfo);
+            _barIconAppInfoDictionary.TryGetValue(barIcon, out appInfo);
 
             // Current app icons
             _currentApplicationIcons.DesktopIcon = appInfo.DesktopIcon;
@@ -155,9 +157,10 @@ public class ComputerControllerUI : MonoBehaviour
     {
         if (_desktopIconAppInfoDictionary.TryGetValue(icon, out ApplicationInformation appInfo))
         {
-            appInfo.Window.gameObject.SetActive(true);
             SetIsWindowState();
+            appInfo.Window.gameObject.SetActive(true);
             appInfo.Window.Open();
+            appInfo.BarIcon.PlayAppearedFeedbacks(MMFeedbacks.Directions.TopToBottom);
         }
         else
         {
@@ -172,6 +175,7 @@ public class ComputerControllerUI : MonoBehaviour
             appInfo.Window.gameObject.SetActive(true);
             SetIsWindowState();
             appInfo.Window.Open();
+            // Bar icon feedbacks are played when it is clicked
         }
         else
         {
@@ -179,11 +183,16 @@ public class ComputerControllerUI : MonoBehaviour
         }
     }
 
+    public void CloseWindowEffects()
+    {
+        _currentApplicationIcons.BarIcon.PlayAppearedFeedbacksAndDisable(MMFeedbacks.Directions.BottomToTop);
+    }
+
     public void CloseWindow(Window window)
     {
         window.ToDefault();
 
-        _windowPool.Enqueue(window.gameObject);
+        _windowsUI.WindowPool.Enqueue(window.gameObject);
 
         _barUI.RemoveIcon(_currentApplicationIcons.BarIcon);
         _barUI.FixAllPositions(_currentApplicationIcons.BarIcon);
