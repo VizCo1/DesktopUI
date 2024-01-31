@@ -54,7 +54,8 @@ public class BarUI : IconHolderSpace
         {
             _barIconsList.Add(barIcon);
             iconGO.SetActive(true);
-            barIcon.Init(GetAvailableStartingPosition());
+            //barIcon.Init(GetAvailableStartingPosition());
+            barIcon.Init(GetAvailableStartingIndex());
             return iconGO;
         }
         else
@@ -66,23 +67,17 @@ public class BarUI : IconHolderSpace
 
     public void FixPositionsAndRemoveIcon(BarIcon icon)
     {
-        // Update status of the icon's position
-        SetIconPositionStatusWithGO(icon.gameObject, false);
-
-        // Fix positions
-        for (int i = 1; i < _barIconsList.Count; i++)
+        for (int i = 0; i < _barIconsList.Count; i++)
         {
-            if (!_iconPositions[i - 1].IsOccupied && _iconPositions[i].IsOccupied)
+            if (_barIconsList[i].Index > icon.Index)
             {
-                // Exchange occupied status
-                _iconPositions[i].IsOccupied = false;
-                _iconPositions[i - 1].IsOccupied = true;
-
-                // Move icon to the free position
-                _barIconsList[i].FixIconPosition(_iconPositions[i - 1].Position);
-                _barIconsList[i].SetIconPos(_iconPositions[i - 1].Position);
+                // Move icon to a free position
+                _barIconsList[i].FixIconPosition(GetPosition(--_barIconsList[i].Index));
             }
         }
+
+        // Now the last position is free
+        _iconPositions[_barIconsList.Count - 1].IsOccupied = false;
 
         // Remove icon
         _iconPool.Enqueue(icon.gameObject);

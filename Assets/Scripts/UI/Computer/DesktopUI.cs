@@ -43,9 +43,9 @@ public class DesktopUI : IconHolderSpace
     public override GameObject AddIcon()
     {
         GameObject iconGO = Instantiate(_iconTemplate, _iconContainer);
-        if (iconGO.TryGetComponent(out DesktopIcon component))
+        if (iconGO.TryGetComponent(out DesktopIcon desktopIcon))
         {
-            component.Init(GetAvailableStartingPosition());
+            desktopIcon.Init(GetAvailableStartingPosition());
             return iconGO;
         }
         else

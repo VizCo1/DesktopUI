@@ -39,6 +39,20 @@ public class IconHolderSpace : MonoBehaviour
         return Vector2.zero;
     }
 
+    protected int GetAvailableStartingIndex()
+    {
+        for (int i = 0; i < _iconPositions.Length; i++)
+        {
+            if (!_iconPositions[i].IsOccupied)
+            {
+                _iconPositions[i].IsOccupied = true;
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     //private void OnDrawGizmos()
     //{
     //    _iconPositions = new IconPosition[_rows * _columns];
@@ -76,8 +90,10 @@ public class IconHolderSpace : MonoBehaviour
         }
     }
 
+    public Vector2 GetPosition(int index) => _iconPositions[index].Position;
+
     public virtual GameObject AddIcon() { Debug.LogError("Function was not implemented"); return null; }
     public virtual int FindProperIndex(Vector2 iconPos) { return default; }
 
-    public void SetIconPositionStatusWithGO(GameObject icon, bool setter) => _iconPositions[(FindProperIndex(icon.transform.position))].IsOccupied = setter;    
+    public void SetIconPositionStatusWithIndex(int index, bool setter) => _iconPositions[index].IsOccupied = setter;    
 }

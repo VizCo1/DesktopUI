@@ -16,7 +16,8 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
 
     private Button _icon;
     private RectTransform _rectTransform;
-    private Vector2 _iconPos;
+
+    public int Index { get; set; }
 
     private void Awake()
     {
@@ -28,7 +29,7 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
     {
         _icon.onClick.AddListener(() =>
         {
-            if (_iconPos == new Vector2(transform.position.x, transform.position.y))
+            if (_barUI.GetPosition(Index) == new Vector2(transform.position.x, transform.position.y))
             {
                 ComputerControllerUI.Instance.HandleBarIconClicked(this); 
                 PlayClickedFeedbacks();
@@ -41,10 +42,10 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
         _icon.onClick.RemoveAllListeners();
     }
 
-    public void Init(Vector2 pos)
+    public void Init(int index)
     {
-        _iconPos = pos;
-        transform.position = pos;
+        Index = index;
+        transform.position = _barUI.GetPosition(Index);
         gameObject.SetActive(true);
     }
 
@@ -56,7 +57,7 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
     public void OnPointerUp(PointerEventData eventData)
     {
         _barUI.IsMovingIcon = false;
-        FixIconPosition(_iconPos);
+        FixIconPosition(_barUI.GetPosition(Index));
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -76,19 +77,23 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
 
     public void SwapPosWith(BarIcon movingIcon)
     {
-        Vector2 tempIconPos = _iconPos;
-        _iconPos = movingIcon.GetIconPos();
-        movingIcon.SetIconPos(tempIconPos);
-        FixIconPosition(_iconPos);
+        // Swap indices
+        (movingIcon.Index, Index) = (Index, movingIcon.Index);
+        
+        //// Swap positions
+        //Vector2 tempIconPos = _iconPos;
+        //_iconPos = movingIcon.GetIconPos();
+        //movingIcon.SetIconPos(tempIconPos);
+
+        // Fix position
+        this.FixIconPosition(_barUI.GetPosition(Index));
+
     }
 
     public void FixIconPosition(Vector2 pos)
     {
         transform.DOMove(pos, 0.25f);
     }
-
-    public Vector2 GetIconPos() => _iconPos;
-    public void SetIconPos(Vector2 pos) => _iconPos = pos;
 
     public void PlayClickedFeedbacks()
     {

@@ -204,7 +204,7 @@ MonoBehaviour:
         DebugActive: 0
         AnimatePositionTarget: {fileID: 6269937669152502116}
         Mode: 0
-        Space: 0
+        Space: 1
         RandomizeRemap: 0
         AnimatePositionDuration: 0.2
         AnimatePositionTween:
