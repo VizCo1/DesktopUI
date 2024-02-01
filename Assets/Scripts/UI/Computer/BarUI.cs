@@ -17,7 +17,7 @@ public class BarUI : IconHolderSpace
         _barIconsList = new List<BarIcon>();
     }
 
-    protected override void InitializeSpace()
+    public override void InitializeSpace()
     {
         _iconPositions = new IconPosition[_rows * _columns];
 
@@ -37,7 +37,7 @@ public class BarUI : IconHolderSpace
         _iconTemplate.SetActive(false);
     }
 
-    public override GameObject AddIcon()
+    public override GameObject AddIcon(int minigameID)
     {
         // Reuse or create new icon
         if (!_iconPool.TryDequeue(out GameObject iconGO))
@@ -50,7 +50,7 @@ public class BarUI : IconHolderSpace
             _barIconsList.Add(barIcon);
             iconGO.SetActive(true);
             //barIcon.Init(GetAvailableStartingPosition());
-            barIcon.Init(GetAvailableStartingIndex());
+            barIcon.Init(GetAvailableStartingIndex(), minigameID);
             return iconGO;
         }
         else

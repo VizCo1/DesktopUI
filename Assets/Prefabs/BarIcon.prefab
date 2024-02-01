@@ -992,6 +992,7 @@ MonoBehaviour:
   _selectedGameObject: {fileID: 3480084638764393315}
   _clickedFeedbacks: {fileID: 3613645320808428824}
   _appearedFeedbacks: {fileID: 8608956778716414888}
+  _iconImage: {fileID: 5764620520898822806}
 --- !u!114 &7201668243786896592
 MonoBehaviour:
   m_ObjectHideFlags: 0

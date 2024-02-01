@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using MoreMountains.Feedbacks;
 using DG.Tweening;
+using System;
 
 public class Window : MonoBehaviour
 {
@@ -10,11 +11,14 @@ public class Window : MonoBehaviour
     [SerializeField] private Button _minimizeButton;
     [SerializeField] private MMF_Player _closingFeedbacks;
     [SerializeField] private MMF_Player _minimizingFeedbacks;
-    
+
+    [SerializeField] private RawImage _backgroundRawImage;
+
     private void Start()
     {
         _closeButton.onClick.AddListener(() => 
         {
+            _closeButton.interactable = false;
             Close();
         });
         _minimizeButton.onClick.AddListener(() => 
@@ -29,9 +33,15 @@ public class Window : MonoBehaviour
         _minimizeButton.onClick.RemoveAllListeners();
     }
 
+    private void OnEnable()
+    {
+        _closeButton.interactable = true;
+    }
+
     public void Open()
     {
         transform.SetAsLastSibling();
+        //_closeButton.interactable = true;
         _minimizingFeedbacks.Direction = MMFeedbacks.Directions.BottomToTop;
         _minimizingFeedbacks.PlayFeedbacks();
     }
@@ -55,5 +65,10 @@ public class Window : MonoBehaviour
     {
         gameObject.SetActive(false);
         GetComponent<CanvasGroup>().alpha = 1f;
+    }
+
+    public void SetMinigameRenderTexture(RenderTexture renderTexture)
+    {
+        _backgroundRawImage.texture = renderTexture;
     }
 }

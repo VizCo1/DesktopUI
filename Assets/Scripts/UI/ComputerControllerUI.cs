@@ -1,6 +1,8 @@
 using MoreMountains.Feedbacks;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ComputerControllerUI : MonoBehaviour
 {
@@ -30,6 +32,13 @@ public class ComputerControllerUI : MonoBehaviour
         IsWindow,
     }
 
+    public enum MinigameScenes
+    {
+        Minigame1,
+        Minigame2,
+        Minigame3,
+    }
+
     private Computerstate _state = Computerstate.IsDesktop;
 
     private Dictionary<DesktopIcon, ApplicationInformation> _desktopIconAppInfoDictionary = new Dictionary<DesktopIcon, ApplicationInformation>();
@@ -39,7 +48,10 @@ public class ComputerControllerUI : MonoBehaviour
     //private Pool _windowPool;
 
     [SerializeField] private BarUI _barUI;
+    [SerializeField] private DesktopUI _desktopUI;
     [SerializeField] private WindowsUI _windowsUI;
+
+    [SerializeField] private RenderTexture[] _minigamesRenderTextures;
     
     private ApplicationIcons _currentApplicationIcons;
 
@@ -55,6 +67,30 @@ public class ComputerControllerUI : MonoBehaviour
         Instance = this;
         _mainCanvas = GetComponent<Canvas>();
         _currentApplicationIcons = new ApplicationIcons();
+    }
+
+    private void Start()
+    {
+        _barUI.InitializeSpace();
+        _desktopUI.InitializeSpace();
+
+        InitializeAvailableApplications();
+    }
+
+    private void InitializeAvailableApplications()
+    {
+        int availableApps = 3;
+        int i = 0;
+        foreach (MinigameScenes minigameScene in Enum.GetValues(typeof(MinigameScenes)))
+        {
+            if (i >= availableApps)
+            {
+                break;
+            }
+
+            _desktopUI.AddIcon((int) minigameScene);
+            i++;
+        }
     }
 
     #region Handle Icon Clicked
@@ -83,7 +119,7 @@ public class ComputerControllerUI : MonoBehaviour
             _currentApplicationIcons.BarIcon = appInfo.BarIcon;
             _currentApplicationIcons.DesktopIcon = desktopIcon;
 
-            OpenWindowWithDesktopIcon(desktopIcon);
+            OpenWindowWithDesktopIcon(desktopIcon, false);
         }
         // Icon does not have a window
         else if (_windowsUI.WindowPool.TryDequeue(out GameObject windowGO))
@@ -92,21 +128,21 @@ public class ComputerControllerUI : MonoBehaviour
 
             // Current app icons
             _currentApplicationIcons.DesktopIcon = desktopIcon;
-            _currentApplicationIcons.BarIcon = _barUI.AddIcon().GetComponent<BarIcon>();
+            _currentApplicationIcons.BarIcon = _barUI.AddIcon(desktopIcon.MinigameID).GetComponent<BarIcon>();
 
             // Add to dictionaries
             ApplicationInformation appInfo = new ApplicationInformation(desktopIcon, _currentApplicationIcons.BarIcon, window);
             _desktopIconAppInfoDictionary.Add(_currentApplicationIcons.DesktopIcon, appInfo);
             _barIconAppInfoDictionary.Add(_currentApplicationIcons.BarIcon, appInfo);
 
-            OpenWindowWithDesktopIcon(desktopIcon);
+            OpenWindowWithDesktopIcon(desktopIcon, true);
         }
         // No windows left in the window pool
         else
         {
             // Current app icons
             _currentApplicationIcons.DesktopIcon = desktopIcon;
-            _currentApplicationIcons.BarIcon = _barUI.AddIcon().GetComponent<BarIcon>();
+            _currentApplicationIcons.BarIcon = _barUI.AddIcon(desktopIcon.MinigameID).GetComponent<BarIcon>();
 
             // Create new window
             Window window = _windowsUI.WindowPool.CreateGameObject().GetComponent<Window>();
@@ -116,7 +152,7 @@ public class ComputerControllerUI : MonoBehaviour
             _desktopIconAppInfoDictionary.Add(desktopIcon, appInfo);
             _barIconAppInfoDictionary.Add(_currentApplicationIcons.BarIcon, appInfo);
 
-            OpenWindowWithDesktopIcon(desktopIcon);
+            OpenWindowWithDesktopIcon(desktopIcon, true);
         }
 
         // Activate the selected visuals of the current bar icon
@@ -169,13 +205,21 @@ public class ComputerControllerUI : MonoBehaviour
 
     #endregion
 
-    #region Open and Close Window
+    #region Open Window
 
-    private void OpenWindowWithDesktopIcon(DesktopIcon icon)
+    private void OpenWindowWithDesktopIcon(DesktopIcon icon, bool isFirstTime)
     {
         if (_desktopIconAppInfoDictionary.TryGetValue(icon, out ApplicationInformation appInfo))
         {
             SetIsWindowState();
+
+            if (isFirstTime)
+            {
+                MinigameScenes sceneToLoad = (MinigameScenes) icon.MinigameID;
+                appInfo.Window.SetMinigameRenderTexture(GetMinigameRenderTexture(sceneToLoad));
+                SceneManager.LoadScene(sceneToLoad.ToString(), LoadSceneMode.Additive);
+            }
+
             appInfo.Window.gameObject.SetActive(true);
             appInfo.Window.Open();
             appInfo.BarIcon.PlayAppearedFeedbacks(MMFeedbacks.Directions.TopToBottom);
@@ -201,6 +245,10 @@ public class ComputerControllerUI : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Close Window
+
     public void CloseWindowEffects()
     {
         // Deactivate selected visuals of the previous bar icon
@@ -212,6 +260,9 @@ public class ComputerControllerUI : MonoBehaviour
     public void CloseWindow(Window window)
     {
         window.ToDefault();
+
+        MinigameScenes sceneToUnload = (MinigameScenes) _currentApplicationIcons.DesktopIcon.MinigameID;
+        SceneManager.UnloadSceneAsync(sceneToUnload.ToString());
 
         _windowsUI.WindowPool.Enqueue(window.gameObject);
 
@@ -226,10 +277,19 @@ public class ComputerControllerUI : MonoBehaviour
 
     #endregion
 
+    #region Minimize window
+
     public void MinimizeWindowEffects()
     {
         // Deactivate selected visuals of the previous bar icon
         _currentApplicationIcons.BarIcon.SetSelectedVisuals(false);
+    }
+
+    #endregion
+
+    private RenderTexture GetMinigameRenderTexture(MinigameScenes minigameScenes)
+    {
+        return _minigamesRenderTextures[(int)minigameScenes];
     }
 
     public Canvas GetMainCanvas() => _mainCanvas;

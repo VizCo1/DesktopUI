@@ -16,13 +16,7 @@ public class IconHolderSpace : MonoBehaviour
 
     protected IconPosition[] _iconPositions;
 
-    private void Start()
-    {
-        InitializeSpace();
-        //DOVirtual.DelayedCall(0.5f, InitializeSpace);
-    }
-
-    protected virtual void InitializeSpace() { }
+    public virtual void InitializeSpace() { }
 
     protected Vector2 GetAvailableStartingPosition()
     {
@@ -91,7 +85,7 @@ public class IconHolderSpace : MonoBehaviour
 
     public Vector2 GetPosition(int index) => _iconPositions[index].Position;
 
-    public virtual GameObject AddIcon() { Debug.LogError("Function was not implemented"); return null; }
+    public virtual GameObject AddIcon(int minigame) { Debug.LogError("Function was not implemented"); return null; }
     public virtual int FindProperIndex(Vector2 iconPos) { return default; }
 
     public void SetIconPositionStatusWithIndex(int index, bool setter) => _iconPositions[index].IsOccupied = setter;    

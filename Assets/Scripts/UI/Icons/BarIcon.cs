@@ -1,5 +1,6 @@
 using DG.Tweening;
 using MoreMountains.Feedbacks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -11,10 +12,13 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
     [SerializeField] private MMF_Player _clickedFeedbacks;
     [SerializeField] private MMF_Player _appearedFeedbacks;
 
+    [SerializeField] private Image _iconImage;
+
     private Button _icon;
     private RectTransform _rectTransform;
 
     public int Index { get; set; }
+    public int MinigameID { get; private set; }
 
     private void Awake()
     {
@@ -41,8 +45,9 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
         _icon.onClick.RemoveAllListeners();
     }
 
-    public void Init(int index)
+    public void Init(int index, int id)
     {
+        MinigameID = id;
         Index = index;
         transform.position = _barUI.GetPosition(Index);
         gameObject.SetActive(true);

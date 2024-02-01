@@ -1,11 +1,10 @@
 using UnityEngine;
-using VInspector;
 
 public class DesktopUI : IconHolderSpace
 {
     private KeyPosition[] _verticalKeyPositions;
 
-    protected override void InitializeSpace()
+    public override void InitializeSpace()
     {
         _iconPositions = new IconPosition[_rows * _columns];
         _verticalKeyPositions = new KeyPosition[_iconPositions.Length / _rows];
@@ -34,13 +33,12 @@ public class DesktopUI : IconHolderSpace
         _iconTemplate.SetActive(false);
     }
 
-    [Button]
-    public override GameObject AddIcon()
+    public override GameObject AddIcon(int minigameID)
     {
         GameObject iconGO = Instantiate(_iconTemplate, _iconContainer);
         if (iconGO.TryGetComponent(out DesktopIcon desktopIcon))
         {
-            desktopIcon.Init(GetAvailableStartingPosition());
+            desktopIcon.Init(GetAvailableStartingPosition(), minigameID);
             return iconGO;
         }
         else

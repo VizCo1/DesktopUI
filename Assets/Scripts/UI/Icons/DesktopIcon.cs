@@ -1,23 +1,31 @@
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler, IPointerClickHandler
 {
     [SerializeField] private DesktopUI _desktopUI;
+
+    [SerializeField] private Image _iconImage;
+    [SerializeField] private TMP_Text _iconText;
 
     private RectTransform _rectTransform;
     private Vector2 _prevPos;
     int _clicksToOpen = 2;
     int _clicks = 0;
 
+    public int MinigameID { get; private set; }
+
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
     }
 
-    public void Init(Vector2 pos)
+    public void Init(Vector2 pos, int id)
     {
+        MinigameID = id;
         transform.position = pos;
         gameObject.SetActive(true);
     }
