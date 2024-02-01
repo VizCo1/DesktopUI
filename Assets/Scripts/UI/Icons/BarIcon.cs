@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerEnterHandler, IPointerDownHandler
 {
     [SerializeField] private BarUI _barUI;
+    [SerializeField] private GameObject _selectedGameObject;
     [SerializeField] private MMF_Player _clickedFeedbacks;
     [SerializeField] private MMF_Player _appearedFeedbacks;
 
@@ -23,6 +24,8 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
     {
         _rectTransform = GetComponent<RectTransform>();
         _icon = GetComponent<Button>();
+
+        SetSelectedVisuals(false);
     }
 
     private void Start()
@@ -110,5 +113,24 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
     {
         PlayAppearedFeedbacks(direction);
         DOVirtual.DelayedCall(_appearedFeedbacks.TotalDuration + 0.1f, () => gameObject.SetActive(false));
+    }
+
+    public void SetSelectedVisuals(bool setter)
+    {
+        float endValue;
+        if (setter)
+        {
+            endValue = 1;
+            _selectedGameObject.transform.localScale = Vector3.zero;
+        }
+        else
+        {
+            endValue= 0;
+            _selectedGameObject.transform.localScale = Vector3.one;
+        }
+
+        float duration = 0.25f;
+        _selectedGameObject.transform.DOScale(endValue, duration)
+            .SetEase(Ease.Linear);
     }
 }

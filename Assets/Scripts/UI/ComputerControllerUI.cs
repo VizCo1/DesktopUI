@@ -70,6 +70,12 @@ public class ComputerControllerUI : MonoBehaviour
             return;
         }
 
+        // Deactivate selected visuals of the previous bar icon
+        if (_currentApplicationIcons.BarIcon != null)
+        {
+            _currentApplicationIcons.BarIcon.SetSelectedVisuals(false);
+        }
+
         // Icon already has a window
         if (_desktopIconAppInfoDictionary.ContainsKey(desktopIcon))
         {
@@ -115,15 +121,21 @@ public class ComputerControllerUI : MonoBehaviour
 
             OpenWindowWithDesktopIcon(desktopIcon);
         }
+
+        // Activate the selected visuals of the current bar icon
+        _currentApplicationIcons.BarIcon.SetSelectedVisuals(true);
     }
 
     public void HandleBarIconClicked(BarIcon barIcon)
     {
 
+        // Deactivate selected visuals of the previous bar icon
+        _currentApplicationIcons.BarIcon.SetSelectedVisuals(false);
+
         if (IsWindowState() && _barIconAppInfoDictionary.TryGetValue(_currentApplicationIcons.BarIcon, out ApplicationInformation appInfo))
         {
             appInfo.Window.Minimize();
-
+          
             // Same icons, just minimize the window
             if (barIcon == _currentApplicationIcons.BarIcon)
             {
@@ -153,6 +165,9 @@ public class ComputerControllerUI : MonoBehaviour
         {
             Debug.LogError("This bar icon should not be activated, it does not have a window");
         }
+
+        // Activate the selected visuals of the current bar icon
+        _currentApplicationIcons.BarIcon.SetSelectedVisuals(true);
     }
 
     #endregion
@@ -191,6 +206,9 @@ public class ComputerControllerUI : MonoBehaviour
 
     public void CloseWindowEffects()
     {
+        // Deactivate selected visuals of the previous bar icon
+        _currentApplicationIcons.BarIcon.SetSelectedVisuals(false);
+
         _currentApplicationIcons.BarIcon.PlayAppearedFeedbacksAndDisable(MMFeedbacks.Directions.BottomToTop);
     }
 
@@ -205,7 +223,6 @@ public class ComputerControllerUI : MonoBehaviour
         // Remove from dictionaries
         _desktopIconAppInfoDictionary.Remove(_currentApplicationIcons.DesktopIcon);
         _barIconAppInfoDictionary.Remove(_currentApplicationIcons.BarIcon);
-
 
         SetIsDesktopState();
     }
