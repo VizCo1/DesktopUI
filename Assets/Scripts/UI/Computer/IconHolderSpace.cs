@@ -18,7 +18,8 @@ public class IconHolderSpace : MonoBehaviour
 
     private void Start()
     {
-        DOVirtual.DelayedCall(0.5f, InitializeSpace);
+        InitializeSpace();
+        //DOVirtual.DelayedCall(0.5f, InitializeSpace);
     }
 
     protected virtual void InitializeSpace() { }
