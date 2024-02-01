@@ -1,9 +1,6 @@
 using MoreMountains.Feedbacks;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using VInspector;
 
 public class ComputerControllerUI : MonoBehaviour
 {
