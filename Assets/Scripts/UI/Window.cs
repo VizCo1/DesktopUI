@@ -46,6 +46,7 @@ public class Window : MonoBehaviour
     public void Minimize()
     {
         ComputerControllerUI.Instance.SetIsDesktopState();
+        ComputerControllerUI.Instance.MinimizeWindowEffects();
         _minimizingFeedbacks.Direction = MMFeedbacks.Directions.TopToBottom;
         _minimizingFeedbacks.PlayFeedbacks();
     }

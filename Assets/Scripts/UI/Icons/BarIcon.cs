@@ -78,15 +78,9 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
     {
         // Swap indices
         (movingIcon.Index, Index) = (Index, movingIcon.Index);
-        
-        //// Swap positions
-        //Vector2 tempIconPos = _iconPos;
-        //_iconPos = movingIcon.GetIconPos();
-        //movingIcon.SetIconPos(tempIconPos);
 
         // Fix position
         this.FixIconPosition(_barUI.GetPosition(Index));
-
     }
 
     public void FixIconPosition(Vector2 pos)

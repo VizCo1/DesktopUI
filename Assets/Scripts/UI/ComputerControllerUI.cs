@@ -226,6 +226,12 @@ public class ComputerControllerUI : MonoBehaviour
 
     #endregion
 
+    public void MinimizeWindowEffects()
+    {
+        // Deactivate selected visuals of the previous bar icon
+        _currentApplicationIcons.BarIcon.SetSelectedVisuals(false);
+    }
+
     public Canvas GetMainCanvas() => _mainCanvas;
 
     public bool IsDesktopState() => _state == Computerstate.IsDesktop;
