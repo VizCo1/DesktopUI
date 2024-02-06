@@ -6,12 +6,14 @@ public class WindowsUI : MonoBehaviour
 {
     private Pool _windowPool;
 
+    [SerializeField] private Window[] _noMinigameWindows;
+
     private void Awake()
     {
         _windowPool = GetComponent<Pool>();
     }
 
-    public Window CreateWindow()
+    public Window CreateMinigameWindow()
     {
         Window window;
 
@@ -27,8 +29,18 @@ public class WindowsUI : MonoBehaviour
         return window;
     }
 
-    public void CloseWindow(Window window)
+    public Window CreateApplicationWindow(int index)
+    {
+        return _noMinigameWindows[index];
+    }
+
+    public void CloseMinigameWindow(Window window)
     {
         _windowPool.Enqueue(window.gameObject);
     }
+
+    //public void CloseApplicationWindow()
+    //{
+
+    //}
 }

@@ -33,12 +33,12 @@ public class DesktopUI : IconHolderSpace
         _iconTemplate.SetActive(false);
     }
 
-    public override GameObject AddIcon(int minigameID)
+    public override GameObject AddIcon(int applicationID)
     {
         GameObject iconGO = Instantiate(_iconTemplate, _iconContainer);
         if (iconGO.TryGetComponent(out DesktopIcon desktopIcon))
         {
-            desktopIcon.Init(GetAvailableStartingPosition(), minigameID);
+            desktopIcon.Init(GetAvailableStartingPosition(), applicationID);
             return iconGO;
         }
         else

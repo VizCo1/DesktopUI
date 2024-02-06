@@ -33,11 +33,12 @@ public class ComputerControllerUI : MonoBehaviour
         IsWindow,
     }
 
-    public enum MinigameScenes
+    private enum ApplicationWindow
     {
         Minigame1,
         Minigame2,
         Minigame3,
+        Store,
     }
 
     private Computerstate _state = Computerstate.IsDesktop;
@@ -54,6 +55,7 @@ public class ComputerControllerUI : MonoBehaviour
     [SerializeField] private RenderTexture[] _minigamesRenderTextures;
     
     private ApplicationIcons _currentApplicationIcons;
+    private int _lastMinigameIndex = 2;
 
     public static ComputerControllerUI Instance { get; private set; }
 
@@ -82,18 +84,20 @@ public class ComputerControllerUI : MonoBehaviour
         int availableApps = 3;
         int i = 0;
         // Minigame applications
-        foreach (MinigameScenes minigameScene in Enum.GetValues(typeof(MinigameScenes)))
+        // THIS WILL NEED REFACTORING!!!
+        foreach (ApplicationWindow applications in Enum.GetValues(typeof(ApplicationWindow)))
         {
             if (i >= availableApps)
             {
                 break;
             }
 
-            _desktopUI.AddIcon((int) minigameScene);
+            _desktopUI.AddIcon((int) applications);
             i++;
         }
 
         // Store application
+        GameObject storeIcon = _desktopUI.AddIcon((int) ApplicationWindow.Store);
     }
 
     #region Handle Icon Clicked
@@ -127,7 +131,19 @@ public class ComputerControllerUI : MonoBehaviour
         // Create a new window
         else
         {
-            Window window = _windowsUI.CreateWindow();
+            bool isMinigame = desktopIcon.ApplicationID <= _lastMinigameIndex;
+
+            Window window;
+
+            if (isMinigame)
+            {
+                window = _windowsUI.CreateMinigameWindow();
+            }
+            else
+            {
+                int index = desktopIcon.ApplicationID - _lastMinigameIndex - 1;
+                window = _windowsUI.CreateApplicationWindow(index);
+            }
 
             // Current app icons
             _currentApplicationIcons.DesktopIcon = desktopIcon;
@@ -138,7 +154,7 @@ public class ComputerControllerUI : MonoBehaviour
             _desktopIconAppInfoDictionary.Add(_currentApplicationIcons.DesktopIcon, appInfo);
             _barIconAppInfoDictionary.Add(_currentApplicationIcons.BarIcon, appInfo);
 
-            OpenWindowWithDesktopIcon(desktopIcon, true);
+            OpenWindowWithDesktopIcon(desktopIcon, isMinigame);
         }
 
         // Activate the selected visuals of the current bar icon
@@ -193,17 +209,17 @@ public class ComputerControllerUI : MonoBehaviour
 
     #region Open Window
 
-    private void OpenWindowWithDesktopIcon(DesktopIcon icon, bool isFirstTime)
+    private void OpenWindowWithDesktopIcon(DesktopIcon icon, bool prepareRenderTexture)
     {
         if (_desktopIconAppInfoDictionary.TryGetValue(icon, out ApplicationInformation appInfo))
         {
             SetIsWindowState();
 
-            if (isFirstTime)
+            if (prepareRenderTexture)
             {
-                MinigameScenes sceneToLoad = (MinigameScenes) icon.ApplicationID;
-                appInfo.Window.SetMinigameRenderTexture(GetMinigameRenderTexture(sceneToLoad));
-                SceneManager.LoadScene(sceneToLoad.ToString(), LoadSceneMode.Additive);
+                ApplicationWindow appID = (ApplicationWindow) icon.ApplicationID;
+                appInfo.Window.SetApplicationRenderTexture(GetMinigameRenderTexture(appID));
+                SceneManager.LoadScene(appID.ToString(), LoadSceneMode.Additive);
             }
 
             appInfo.Window.gameObject.SetActive(true);
@@ -223,7 +239,8 @@ public class ComputerControllerUI : MonoBehaviour
             appInfo.Window.gameObject.SetActive(true);
             SetIsWindowState();
             appInfo.Window.Open();
-            // Bar icon feedbacks are played when it is clicked
+
+            // Bar icon feedbacks are played when it is clicked !!
         }
         else
         {
@@ -243,14 +260,22 @@ public class ComputerControllerUI : MonoBehaviour
         _currentApplicationIcons.BarIcon.PlayAppearedFeedbacksAndDisable(MMFeedbacks.Directions.BottomToTop);
     }
 
-    public void CloseWindow(Window window)
+    public void CloseWindowAfterEffects(Window window)
     {
         window.ToDefault();
 
-        MinigameScenes sceneToUnload = (MinigameScenes) _currentApplicationIcons.DesktopIcon.ApplicationID;
-        SceneManager.UnloadSceneAsync(sceneToUnload.ToString());
+        bool isMinigame = _currentApplicationIcons.DesktopIcon.ApplicationID <= _lastMinigameIndex;
 
-        _windowsUI.CloseWindow(window);
+        if (isMinigame)
+        {
+            ApplicationWindow sceneToUnload = (ApplicationWindow) _currentApplicationIcons.DesktopIcon.ApplicationID;
+            SceneManager.UnloadSceneAsync(sceneToUnload.ToString());
+            _windowsUI.CloseMinigameWindow(window);
+        }
+        else
+        {
+            //_windowsUI.CloseApplicationWindow();
+        }
 
         _barUI.FixPositionsAndRemoveIcon(_currentApplicationIcons.BarIcon);
 
@@ -273,9 +298,9 @@ public class ComputerControllerUI : MonoBehaviour
 
     #endregion
 
-    private RenderTexture GetMinigameRenderTexture(MinigameScenes minigameScenes)
+    private RenderTexture GetMinigameRenderTexture(ApplicationWindow application)
     {
-        return _minigamesRenderTextures[(int)minigameScenes];
+        return _minigamesRenderTextures[(int)application];
     }
 
     public Canvas GetMainCanvas() => _mainCanvas;

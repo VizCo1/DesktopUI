@@ -21,6 +21,7 @@ public class Window : MonoBehaviour
             _closeButton.interactable = false;
             Close();
         });
+
         _minimizeButton.onClick.AddListener(() => 
         {
             Minimize();          
@@ -50,7 +51,7 @@ public class Window : MonoBehaviour
     {
         _closingFeedbacks.PlayFeedbacks();
         ComputerControllerUI.Instance.CloseWindowEffects();
-        DOVirtual.DelayedCall(_closingFeedbacks.TotalDuration + 0.1f, () => ComputerControllerUI.Instance.CloseWindow(this));
+        DOVirtual.DelayedCall(_closingFeedbacks.TotalDuration + 0.1f, () => ComputerControllerUI.Instance.CloseWindowAfterEffects(this));
     }
 
     public void Minimize()
@@ -67,7 +68,7 @@ public class Window : MonoBehaviour
         GetComponent<CanvasGroup>().alpha = 1f;
     }
 
-    public void SetMinigameRenderTexture(RenderTexture renderTexture)
+    public void SetApplicationRenderTexture(RenderTexture renderTexture)
     {
         _backgroundRawImage.texture = renderTexture;
     }
