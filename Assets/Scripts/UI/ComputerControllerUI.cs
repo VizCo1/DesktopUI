@@ -81,6 +81,7 @@ public class ComputerControllerUI : MonoBehaviour
     {
         int availableApps = 3;
         int i = 0;
+        // Minigame applications
         foreach (MinigameScenes minigameScene in Enum.GetValues(typeof(MinigameScenes)))
         {
             if (i >= availableApps)
@@ -91,6 +92,8 @@ public class ComputerControllerUI : MonoBehaviour
             _desktopUI.AddIcon((int) minigameScene);
             i++;
         }
+
+        // Store application
     }
 
     #region Handle Icon Clicked
@@ -128,7 +131,7 @@ public class ComputerControllerUI : MonoBehaviour
 
             // Current app icons
             _currentApplicationIcons.DesktopIcon = desktopIcon;
-            _currentApplicationIcons.BarIcon = _barUI.AddIcon(desktopIcon.MinigameID).GetComponent<BarIcon>();
+            _currentApplicationIcons.BarIcon = _barUI.AddIcon(desktopIcon.ApplicationID).GetComponent<BarIcon>();
 
             // Add to dictionaries
             ApplicationInformation appInfo = new ApplicationInformation(desktopIcon, _currentApplicationIcons.BarIcon, window);
@@ -198,7 +201,7 @@ public class ComputerControllerUI : MonoBehaviour
 
             if (isFirstTime)
             {
-                MinigameScenes sceneToLoad = (MinigameScenes) icon.MinigameID;
+                MinigameScenes sceneToLoad = (MinigameScenes) icon.ApplicationID;
                 appInfo.Window.SetMinigameRenderTexture(GetMinigameRenderTexture(sceneToLoad));
                 SceneManager.LoadScene(sceneToLoad.ToString(), LoadSceneMode.Additive);
             }
@@ -244,7 +247,7 @@ public class ComputerControllerUI : MonoBehaviour
     {
         window.ToDefault();
 
-        MinigameScenes sceneToUnload = (MinigameScenes) _currentApplicationIcons.DesktopIcon.MinigameID;
+        MinigameScenes sceneToUnload = (MinigameScenes) _currentApplicationIcons.DesktopIcon.ApplicationID;
         SceneManager.UnloadSceneAsync(sceneToUnload.ToString());
 
         _windowsUI.CloseWindow(window);

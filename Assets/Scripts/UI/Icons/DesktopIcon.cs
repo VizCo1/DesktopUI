@@ -16,7 +16,7 @@ public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoin
     int _clicksToOpen = 2;
     int _clicks = 0;
 
-    public int MinigameID { get; private set; }
+    public int ApplicationID { get; private set; }
 
     private void Awake()
     {
@@ -25,7 +25,7 @@ public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoin
 
     public void Init(Vector2 pos, int id)
     {
-        MinigameID = id;
+        ApplicationID = id;
         transform.position = pos;
         gameObject.SetActive(true);
     }

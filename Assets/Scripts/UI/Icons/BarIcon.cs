@@ -16,9 +16,10 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
 
     private Button _icon;
     private RectTransform _rectTransform;
+    private bool _isSelected = false;
 
     public int Index { get; set; }
-    public int MinigameID { get; private set; }
+    public int ApplicationID { get; private set; }
 
     private void Awake()
     {
@@ -47,7 +48,7 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
 
     public void Init(int index, int id)
     {
-        MinigameID = id;
+        ApplicationID = id;
         Index = index;
         transform.position = _barUI.GetPosition(Index);
         gameObject.SetActive(true);
@@ -113,19 +114,26 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
     public void SetSelectedVisuals(bool setter)
     {
         float endValue;
-        if (setter)
+        if (setter && !_isSelected)
         {
+            _isSelected = true;
             endValue = 1;
             _selectedGameObject.transform.localScale = Vector3.zero;
+            PlaySelectedTween(endValue);
         }
-        else
+        else if (_isSelected)
         {
-            endValue= 0;
+            _isSelected = false;
+            endValue = 0;
             _selectedGameObject.transform.localScale = Vector3.one;
+            PlaySelectedTween(endValue);
         }
 
-        float duration = 0.25f;
-        _selectedGameObject.transform.DOScale(endValue, duration)
-            .SetEase(Ease.Linear);
-    }
+        void PlaySelectedTween(float endValue)
+        {
+            float duration = 0.25f;
+            _selectedGameObject.transform.DOScale(endValue, duration)
+                .SetEase(Ease.Linear);
+        }
+    }  
 }
