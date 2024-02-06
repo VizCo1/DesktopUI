@@ -1,6 +1,7 @@
 using MoreMountains.Feedbacks;
 using System;
 using System.Collections.Generic;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -45,7 +46,6 @@ public class ComputerControllerUI : MonoBehaviour
     private Dictionary<BarIcon, ApplicationInformation> _barIconAppInfoDictionary = new Dictionary<BarIcon, ApplicationInformation>();
 
     private Canvas _mainCanvas;
-    //private Pool _windowPool;
 
     [SerializeField] private BarUI _barUI;
     [SerializeField] private DesktopUI _desktopUI;
@@ -97,7 +97,7 @@ public class ComputerControllerUI : MonoBehaviour
 
     public void HandleDesktopIconClicked(DesktopIcon desktopIcon)
     {
-        // Icons can open a window when in desktop
+        // Desktop icons can open a window when in desktop
         if (!IsDesktopState())
         {
             return;
@@ -121,10 +121,10 @@ public class ComputerControllerUI : MonoBehaviour
 
             OpenWindowWithDesktopIcon(desktopIcon, false);
         }
-        // Icon does not have a window
-        else if (_windowsUI.WindowPool.TryDequeue(out GameObject windowGO))
+        // Create a new window
+        else
         {
-            Window window = windowGO.GetComponent<Window>();
+            Window window = _windowsUI.CreateWindow();
 
             // Current app icons
             _currentApplicationIcons.DesktopIcon = desktopIcon;
@@ -133,23 +133,6 @@ public class ComputerControllerUI : MonoBehaviour
             // Add to dictionaries
             ApplicationInformation appInfo = new ApplicationInformation(desktopIcon, _currentApplicationIcons.BarIcon, window);
             _desktopIconAppInfoDictionary.Add(_currentApplicationIcons.DesktopIcon, appInfo);
-            _barIconAppInfoDictionary.Add(_currentApplicationIcons.BarIcon, appInfo);
-
-            OpenWindowWithDesktopIcon(desktopIcon, true);
-        }
-        // No windows left in the window pool
-        else
-        {
-            // Current app icons
-            _currentApplicationIcons.DesktopIcon = desktopIcon;
-            _currentApplicationIcons.BarIcon = _barUI.AddIcon(desktopIcon.MinigameID).GetComponent<BarIcon>();
-
-            // Create new window
-            Window window = _windowsUI.WindowPool.CreateGameObject().GetComponent<Window>();
-
-            // Add to dictionaries
-            ApplicationInformation appInfo = new ApplicationInformation(desktopIcon, _currentApplicationIcons.BarIcon, window);
-            _desktopIconAppInfoDictionary.Add(desktopIcon, appInfo);
             _barIconAppInfoDictionary.Add(_currentApplicationIcons.BarIcon, appInfo);
 
             OpenWindowWithDesktopIcon(desktopIcon, true);
@@ -264,7 +247,7 @@ public class ComputerControllerUI : MonoBehaviour
         MinigameScenes sceneToUnload = (MinigameScenes) _currentApplicationIcons.DesktopIcon.MinigameID;
         SceneManager.UnloadSceneAsync(sceneToUnload.ToString());
 
-        _windowsUI.WindowPool.Enqueue(window.gameObject);
+        _windowsUI.CloseWindow(window);
 
         _barUI.FixPositionsAndRemoveIcon(_currentApplicationIcons.BarIcon);
 
