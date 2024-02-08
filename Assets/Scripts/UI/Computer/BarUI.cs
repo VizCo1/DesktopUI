@@ -37,7 +37,7 @@ public class BarUI : IconHolderSpace
         _iconTemplate.SetActive(false);
     }
 
-    public override GameObject AddIcon(int applicationID)
+    public override GameObject AddIcon(int applicationID, ApplicationIcon minigameIcon)
     {
         // Reuse or create new icon
         if (!_iconPool.TryDequeue(out GameObject iconGO))
@@ -50,7 +50,7 @@ public class BarUI : IconHolderSpace
             _barIconsList.Add(barIcon);
             iconGO.SetActive(true);
             //barIcon.Init(GetAvailableStartingPosition());
-            barIcon.Init(GetAvailableStartingIndex(), applicationID);
+            barIcon.Init(GetAvailableStartingIndex(), applicationID, minigameIcon);
             return iconGO;
         }
         else

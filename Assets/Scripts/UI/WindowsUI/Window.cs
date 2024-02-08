@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using MoreMountains.Feedbacks;
 using DG.Tweening;
 using System;
+using TMPro;
 
 public class Window : MonoBehaviour
 {
@@ -13,8 +14,9 @@ public class Window : MonoBehaviour
     [SerializeField] private MMF_Player _minimizingFeedbacks;
 
     [SerializeField] private RawImage _backgroundRawImage;
+    [SerializeField] private TMP_Text _titleText;
 
-    private void Start()
+    protected virtual void Start()
     {
         _closeButton.onClick.AddListener(() => 
         {
@@ -37,12 +39,12 @@ public class Window : MonoBehaviour
     private void OnEnable()
     {
         _closeButton.interactable = true;
+
     }
 
-    public void Open()
+    public virtual void Open()
     {
         transform.SetAsLastSibling();
-        //_closeButton.interactable = true;
         _minimizingFeedbacks.Direction = MMFeedbacks.Directions.BottomToTop;
         _minimizingFeedbacks.PlayFeedbacks();
     }
@@ -50,8 +52,8 @@ public class Window : MonoBehaviour
     private void Close()
     {
         _closingFeedbacks.PlayFeedbacks();
-        ComputerControllerUI.Instance.CloseWindowEffects();
-        DOVirtual.DelayedCall(_closingFeedbacks.TotalDuration + 0.1f, () => ComputerControllerUI.Instance.CloseWindowAfterEffects(this));
+        ComputerControllerUI.Instance.CloseWindowInstantEffects();
+        DOVirtual.DelayedCall(_closingFeedbacks.TotalDuration + 0.1f, () => ComputerControllerUI.Instance.CloseWindowDelayedEffects(this));
     }
 
     public void Minimize()
@@ -60,6 +62,11 @@ public class Window : MonoBehaviour
         ComputerControllerUI.Instance.MinimizeWindowEffects();
         _minimizingFeedbacks.Direction = MMFeedbacks.Directions.TopToBottom;
         _minimizingFeedbacks.PlayFeedbacks();
+    }
+
+    public void SetTitle(string title)
+    {
+        _titleText.SetText(title);
     }
 
     public void ToDefault()

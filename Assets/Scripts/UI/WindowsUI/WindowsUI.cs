@@ -13,7 +13,7 @@ public class WindowsUI : MonoBehaviour
         _windowPool = GetComponent<Pool>();
     }
 
-    public Window CreateMinigameWindow()
+    public Window CreateMinigameWindow(string title)
     {
         Window window;
 
@@ -23,8 +23,11 @@ public class WindowsUI : MonoBehaviour
         }
         else
         {
-            window = _windowPool.CreateGameObject().GetComponent<Window>();
+            window = _windowPool.CreateGameObject().GetComponent<Window>();        
         }
+
+        // Since minigames windows are generic the title text needs to be updated
+        window.SetTitle(title);
 
         return window;
     }

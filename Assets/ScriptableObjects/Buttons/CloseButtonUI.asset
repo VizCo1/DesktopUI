@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: CloseButtonUI
   m_EditorClassIdentifier: 
   _colors:
-    m_NormalColor: {r: 0.95294124, g: 0.95294124, b: 0.95294124, a: 1}
-    m_HighlightedColor: {r: 0.8113208, g: 0.2250267, b: 0.2250267, a: 1}
-    m_PressedColor: {r: 0.735849, g: 0.20409396, b: 0.20409396, a: 1}
+    m_NormalColor: {r: 0.39607847, g: 0.38431376, b: 0.6, a: 1}
+    m_HighlightedColor: {r: 0.6981132, g: 0.20021357, b: 0.20021357, a: 1}
+    m_PressedColor: {r: 0.6037736, g: 0.17885366, b: 0.17885366, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1

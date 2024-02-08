@@ -46,9 +46,10 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
         _icon.onClick.RemoveAllListeners();
     }
 
-    public void Init(int index, int id)
+    public void Init(int index, int id, ApplicationIcon minigameIcon)
     {
         ApplicationID = id;
+        _iconImage.sprite = minigameIcon.icon;
         Index = index;
         transform.position = _barUI.GetPosition(Index);
         gameObject.SetActive(true);

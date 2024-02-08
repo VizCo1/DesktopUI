@@ -23,9 +23,11 @@ public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoin
         _rectTransform = GetComponent<RectTransform>();
     }
 
-    public void Init(Vector2 pos, int id)
+    public void Init(Vector2 pos, int id, ApplicationIcon minigameIcon)
     {
         ApplicationID = id;
+        _iconImage.sprite = minigameIcon.icon;
+        _iconText.SetText(minigameIcon.name);
         transform.position = pos;
         gameObject.SetActive(true);
     }
