@@ -2,26 +2,26 @@ using UnityEngine;
 
 public class WindowsUI : MonoBehaviour
 {
-    private Pool _windowPool;
+    private Pool _minigameWindowPool;
 
     [SerializeField] private Window[] _noMinigameWindows;
 
     private void Awake()
     {
-        _windowPool = GetComponent<Pool>();
+        _minigameWindowPool = GetComponent<Pool>();
     }
 
     public Window CreateMinigameWindow(string title)
     {
         MinigameWindow minigameWindow;
 
-        if (_windowPool.TryDequeue(out GameObject windowGO))
+        if (_minigameWindowPool.TryDequeue(out GameObject windowGO))
         {
             minigameWindow = windowGO.GetComponent<MinigameWindow>();
         }
         else
         {
-            minigameWindow = _windowPool.CreateGameObject().GetComponent<MinigameWindow>();        
+            minigameWindow = _minigameWindowPool.CreateGameObject().GetComponent<MinigameWindow>();        
         }
 
         // Since minigames windows are generic the title text needs to be updated
@@ -37,7 +37,7 @@ public class WindowsUI : MonoBehaviour
 
     public void CloseMinigameWindow(Window window)
     {
-        _windowPool.Enqueue(window.gameObject);
+        _minigameWindowPool.Enqueue(window.gameObject);
     }
 
     //public void CloseApplicationWindow()
