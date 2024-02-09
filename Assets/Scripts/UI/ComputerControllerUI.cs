@@ -1,7 +1,6 @@
 using MoreMountains.Feedbacks;
 using System;
 using System.Collections.Generic;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -44,6 +43,7 @@ public class ComputerControllerUI : MonoBehaviour
         Minigame6,
         Minigame7,
         Store,
+        Settings,
     }
 
     [Header("Computer parts")]
@@ -115,6 +115,8 @@ public class ComputerControllerUI : MonoBehaviour
 
         // Store application
         _desktopUI.AddIcon((int) ApplicationWindow.Store, _applicationsIconInfoSO.applications[(int)ApplicationWindow.Store]);
+        // Settings application
+        _desktopUI.AddIcon((int) ApplicationWindow.Settings, _applicationsIconInfoSO.applications[(int)ApplicationWindow.Settings]);
     }
 
     #region Handle Icon Clicked
@@ -236,7 +238,7 @@ public class ComputerControllerUI : MonoBehaviour
             if (prepareRenderTexture)
             {
                 ApplicationWindow appID = (ApplicationWindow) icon.ApplicationID;
-                appInfo.Window.SetApplicationRenderTexture(GetMinigameRenderTexture(appID));
+                appInfo.Window.GetComponent<MinigameWindow>().SetApplicationRenderTexture(GetMinigameRenderTexture(appID));
                 SceneManager.LoadScene(appID.ToString(), LoadSceneMode.Additive);
             }
 

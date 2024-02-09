@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class StoreWindow : Window
 {
-
     private const int ICON_INDEX = 2;
     private const int NAME_INDEX = 3;
     private const int DESCRIPTION_INDEX = 4;

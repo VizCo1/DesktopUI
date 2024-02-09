@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca3a1537e6e795e4fa9fd771019227c2, type: 3}
-  m_Name: MinigamesIconInfo
+  m_Name: ApplicationsIconInfo
   m_EditorClassIdentifier: 
   applications:
   - icon: {fileID: 21300002, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
@@ -29,3 +29,5 @@ MonoBehaviour:
     name: Placeholder
   - icon: {fileID: 21300006, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
     name: Minigames store
+  - icon: {fileID: -3820048696943746370, guid: 3da05e9f66c9f254c8875335e7e9179e, type: 3}
+    name: Settings

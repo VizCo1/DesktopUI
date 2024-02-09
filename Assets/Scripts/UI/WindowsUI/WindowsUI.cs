@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 public class WindowsUI : MonoBehaviour
@@ -15,21 +14,21 @@ public class WindowsUI : MonoBehaviour
 
     public Window CreateMinigameWindow(string title)
     {
-        Window window;
+        MinigameWindow minigameWindow;
 
         if (_windowPool.TryDequeue(out GameObject windowGO))
         {
-            window = windowGO.GetComponent<Window>();
+            minigameWindow = windowGO.GetComponent<MinigameWindow>();
         }
         else
         {
-            window = _windowPool.CreateGameObject().GetComponent<Window>();        
+            minigameWindow = _windowPool.CreateGameObject().GetComponent<MinigameWindow>();        
         }
 
         // Since minigames windows are generic the title text needs to be updated
-        window.SetTitle(title);
+        minigameWindow.SetTitle(title);
 
-        return window;
+        return minigameWindow;
     }
 
     public Window CreateApplicationWindow(int index)

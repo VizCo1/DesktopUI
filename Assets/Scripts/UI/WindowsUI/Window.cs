@@ -7,14 +7,12 @@ using TMPro;
 
 public class Window : MonoBehaviour
 {
+    [Header("Window base")]
 
     [SerializeField] private Button _closeButton;
     [SerializeField] private Button _minimizeButton;
     [SerializeField] private MMF_Player _closingFeedbacks;
     [SerializeField] private MMF_Player _minimizingFeedbacks;
-
-    [SerializeField] private RawImage _backgroundRawImage;
-    [SerializeField] private TMP_Text _titleText;
 
     protected virtual void Start()
     {
@@ -64,19 +62,9 @@ public class Window : MonoBehaviour
         _minimizingFeedbacks.PlayFeedbacks();
     }
 
-    public void SetTitle(string title)
-    {
-        _titleText.SetText(title);
-    }
-
     public void ToDefault()
     {
         gameObject.SetActive(false);
         GetComponent<CanvasGroup>().alpha = 1f;
-    }
-
-    public void SetApplicationRenderTexture(RenderTexture renderTexture)
-    {
-        _backgroundRawImage.texture = renderTexture;
     }
 }
