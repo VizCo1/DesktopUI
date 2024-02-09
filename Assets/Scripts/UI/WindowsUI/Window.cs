@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using MoreMountains.Feedbacks;
 using DG.Tweening;
-using System;
-using TMPro;
 
 public class Window : MonoBehaviour
 {

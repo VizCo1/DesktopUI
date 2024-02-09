@@ -1,6 +1,5 @@
 using DG.Tweening;
 using MoreMountains.Feedbacks;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
