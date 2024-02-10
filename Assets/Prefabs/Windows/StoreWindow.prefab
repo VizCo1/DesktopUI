@@ -201,8 +201,6 @@ MonoBehaviour:
   _minimizeButton: {fileID: 1908540437664557343}
   _closingFeedbacks: {fileID: 8159749802078964737}
   _minimizingFeedbacks: {fileID: 6098474685610504703}
-  _backgroundRawImage: {fileID: 1890186124969469238}
-  _titleText: {fileID: 193115072187574214}
   _appContainer: {fileID: 3932436230542639987}
   _minigameInfoSO: {fileID: 11400000, guid: 9e83582bbf43c764db84ef14b32fa085, type: 2}
   _moneyText: {fileID: 3674394747814377608}

@@ -34,7 +34,7 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
         {
             if (_barUI.GetPosition(Index) == new Vector2(transform.position.x, transform.position.y))
             {
-                ComputerControllerUI.Instance.HandleBarIconClicked(this); 
+                ComputerController.Instance.HandleBarIconClicked(this); 
                 PlayClickedFeedbacks();
             }
         });
@@ -56,7 +56,7 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
 
     public void OnDrag(PointerEventData eventData)
     {
-        _rectTransform.anchoredPosition += new Vector2(eventData.delta.x / ComputerControllerUI.Instance.GetMainCanvas().scaleFactor, 0);     
+        _rectTransform.anchoredPosition += new Vector2(eventData.delta.x / ComputerController.Instance.GetMainCanvas().scaleFactor, 0);     
     }
 
     public void OnPointerUp(PointerEventData eventData)

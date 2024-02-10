@@ -26,7 +26,7 @@ public class StoreWindow : Window
     public override void Open()
     {
         base.Open();
-        _moneyText.SetText(ComputerControllerUI.Instance.Money.ToString());
+        _moneyText.SetText(ComputerController.Instance.Money.ToString());
     }
 
     private void PrepareApplicationsButtons()
@@ -38,7 +38,7 @@ public class StoreWindow : Window
             int appID = i;
             button.onClick.AddListener(() =>
             {
-                if (ComputerControllerUI.Instance.IsWindowState())
+                if (ComputerController.Instance.IsWindowState())
                 {
                     button.interactable = false;
                     UnlockMinigame(appID);
@@ -67,11 +67,11 @@ public class StoreWindow : Window
 
     private void UnlockMinigame(int appID)
     {
-        if (ComputerControllerUI.Instance.Money >= _minigameInfoSO.minigames[appID].cost)
+        if (ComputerController.Instance.Money >= _minigameInfoSO.minigames[appID].cost)
         {
-            ComputerControllerUI.Instance.Money -= _minigameInfoSO.minigames[appID].cost;
-            _moneyText.SetText(ComputerControllerUI.Instance.Money.ToString());
-            ComputerControllerUI.Instance.AddMinigame(appID);
+            ComputerController.Instance.Money -= _minigameInfoSO.minigames[appID].cost;
+            _moneyText.SetText(ComputerController.Instance.Money.ToString());
+            ComputerController.Instance.AddMinigame(appID);
         }
     }
 }

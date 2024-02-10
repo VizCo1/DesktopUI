@@ -34,7 +34,7 @@ public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoin
 
     public void OnDrag(PointerEventData eventData)
     {
-        _rectTransform.anchoredPosition += eventData.delta / ComputerControllerUI.Instance.GetMainCanvas().scaleFactor;
+        _rectTransform.anchoredPosition += eventData.delta / ComputerController.Instance.GetMainCanvas().scaleFactor;
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -67,7 +67,7 @@ public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoin
         {
             if (++_clicks == _clicksToOpen)
             {
-                ComputerControllerUI.Instance.HandleDesktopIconClicked(this);
+                ComputerController.Instance.HandleDesktopIconClicked(this);
                 _clicks = 0;
             }
 

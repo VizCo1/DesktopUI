@@ -18,7 +18,7 @@ public class DesktopUI : IconHolderSpace
         {
             for (int x = 0; x < _rows; x++)
             {
-                Vector2 pos = initialPos + new Vector2(width * x, height * -y) * ComputerControllerUI.Instance.GetMainCanvas().scaleFactor;
+                Vector2 pos = initialPos + new Vector2(width * x, height * -y) * ComputerController.Instance.GetMainCanvas().scaleFactor;
                 int index = y * _rows + x;
                 _iconPositions[index] = new IconPosition(pos, false);
 

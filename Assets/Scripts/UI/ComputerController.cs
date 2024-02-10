@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ComputerControllerUI : MonoBehaviour
+public class ComputerController : MonoBehaviour
 {
     private class ApplicationIcons
     {
@@ -70,7 +70,7 @@ public class ComputerControllerUI : MonoBehaviour
 
     private int _money;
 
-    public static ComputerControllerUI Instance { get; private set; }
+    public static ComputerController Instance { get; private set; }
 
     private void Awake()
     {

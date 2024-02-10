@@ -48,14 +48,14 @@ public class Window : MonoBehaviour
     private void Close()
     {
         _closingFeedbacks.PlayFeedbacks();
-        ComputerControllerUI.Instance.CloseWindowInstantEffects();
-        DOVirtual.DelayedCall(_closingFeedbacks.TotalDuration + 0.1f, () => ComputerControllerUI.Instance.CloseWindowDelayedEffects(this));
+        ComputerController.Instance.CloseWindowInstantEffects();
+        DOVirtual.DelayedCall(_closingFeedbacks.TotalDuration + 0.1f, () => ComputerController.Instance.CloseWindowDelayedEffects(this));
     }
 
     public void Minimize()
     {
-        ComputerControllerUI.Instance.SetIsDesktopState();
-        ComputerControllerUI.Instance.MinimizeWindowEffects();
+        ComputerController.Instance.SetIsDesktopState();
+        ComputerController.Instance.MinimizeWindowEffects();
         _minimizingFeedbacks.Direction = MMFeedbacks.Directions.TopToBottom;
         _minimizingFeedbacks.PlayFeedbacks();
     }
