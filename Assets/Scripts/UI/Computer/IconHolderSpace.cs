@@ -17,6 +17,24 @@ public class IconHolderSpace : MonoBehaviour
 
     public virtual void InitializeSpace() { }
 
+    protected virtual void FixAllIcons() { }
+
+    private void Start()
+    {
+        SettingsController.Instance.OnResolutionChanged += SettingsController_OnResolutionChanged;
+    }
+
+    private void OnDestroy()
+    {
+        SettingsController.Instance.OnResolutionChanged -= SettingsController_OnResolutionChanged;
+    }
+
+    private void SettingsController_OnResolutionChanged()
+    {
+        InitializeSpace();
+        FixAllIcons();
+    }
+
     protected Vector2 GetAvailableStartingPosition()
     {
         for (int i = 0; i < _iconPositions.Length; i++)
@@ -47,26 +65,31 @@ public class IconHolderSpace : MonoBehaviour
 
     protected virtual void OnDrawGizmos()
     {
-        _iconPositions = new IconPosition[_rows * _columns];
+        bool debug = true;
 
-        Vector2 initialPos = _initialPosTranform.position;
-        float width = _iconWidth + _spacing.x;
-        float height = _iconHeight + _spacing.y;
-
-        for (int y = 0; y < _columns; y++)
+        if (debug)
         {
-            for (int x = 0; x < _rows; x++)
+            _iconPositions = new IconPosition[_rows * _columns];
+
+            Vector2 initialPos = _initialPosTranform.position;
+            float width = _iconWidth + _spacing.x;
+            float height = _iconHeight + _spacing.y;
+
+            for (int y = 0; y < _columns; y++)
             {
-                Vector2 pos = initialPos + new Vector2(width * x, height * -y) * GetComponentInParent<Canvas>().scaleFactor;
-                _iconPositions[y * _rows + x] = new IconPosition(pos, false);
+                for (int x = 0; x < _rows; x++)
+                {
+                    Vector2 pos = initialPos + new Vector2(width * x, height * -y) * GetComponentInParent<Canvas>().scaleFactor;
+                    _iconPositions[y * _rows + x] = new IconPosition(pos, false);
+                }
             }
-        }
 
-        Gizmos.color = Color.yellow;
-        foreach (IconPosition iconPosition in _iconPositions)
-        {
-            Gizmos.DrawWireCube(iconPosition.Position, new Vector2(_iconWidth * GetComponentInParent<Canvas>().scaleFactor,
-                _iconHeight * GetComponentInParent<Canvas>().scaleFactor));
+            Gizmos.color = Color.yellow;
+            foreach (IconPosition iconPosition in _iconPositions)
+            {
+                Gizmos.DrawWireCube(iconPosition.Position, new Vector2(_iconWidth * GetComponentInParent<Canvas>().scaleFactor,
+                    _iconHeight * GetComponentInParent<Canvas>().scaleFactor));
+            }
         }
     }
 

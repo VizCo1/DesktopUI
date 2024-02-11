@@ -17,6 +17,22 @@ public class BarUI : IconHolderSpace
         _barIconsList = new List<BarIcon>();
     }
 
+    private void Start()
+    {
+        SettingsController.Instance.OnResolutionChanged += SettingsController_OnResolutionChanged;
+    }
+
+    private void OnDestroy()
+    {
+        SettingsController.Instance.OnResolutionChanged -= SettingsController_OnResolutionChanged;
+    }
+
+    private void SettingsController_OnResolutionChanged()
+    {
+        InitializeSpace();
+        FixAllIcons();
+    }
+
     public override void InitializeSpace()
     {
         _iconPositions = new IconPosition[_rows * _columns];
@@ -37,7 +53,7 @@ public class BarUI : IconHolderSpace
         _iconTemplate.SetActive(false);
     }
 
-    public void FixAllIcons()
+    protected override void FixAllIcons()
     {
         for (int i = 0; i < _iconContainer.childCount; i++)
         {

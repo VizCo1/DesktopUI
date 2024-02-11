@@ -89,7 +89,7 @@ public class DesktopUI : IconHolderSpace
         _iconHeight = iconHeight;
     }
 
-    public void FixAllIcons()
+    protected override void FixAllIcons()
     {
         for (int i = 0; i < _iconContainer.childCount; i++)
         {
