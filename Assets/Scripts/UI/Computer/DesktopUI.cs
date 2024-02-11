@@ -9,12 +9,14 @@ public class DesktopUI : IconHolderSpace
 
     private int _initialColumns;
     private float _initialSpacinY;
+    private float _initialIconHeight;
 
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
         _initialColumns = _columns;
         _initialSpacinY = _spacing.y;
+        _initialIconHeight = _iconHeight;
     }
 
     public override void InitializeSpace()
@@ -52,7 +54,7 @@ public class DesktopUI : IconHolderSpace
     {
         float ySpacing = _initialSpacinY;
         int columns = _initialColumns;
-        float iconHeight = _iconHeight;
+        float iconHeight = _initialIconHeight;
 
         for (int i = 0; i < 10; i++)
         {
@@ -98,11 +100,50 @@ public class DesktopUI : IconHolderSpace
                 DesktopIcon desktopIcon = _iconContainer.GetChild(i).GetComponent<DesktopIcon>();
 
                 Vector2 pos = FindProperPosition(desktopIcon.transform.position);
-
-                desktopIcon.FixIconPosition(pos);
-
+           
                 int index = FindProperIndex(pos);
-                _iconPositions[index].IsOccupied = true;
+
+                if (_iconPositions[index].IsOccupied)
+                {
+                    int verticalIndex = -1;
+                    float smallestDifference = float.MaxValue;
+                    foreach (KeyPosition keyPos in _verticalKeyPositions)
+                    {
+                        float difference = Mathf.Abs(keyPos.Y - pos.y);
+                        if (difference < smallestDifference)
+                        {
+                            smallestDifference = difference;
+                            verticalIndex = keyPos.Index;
+                        }
+                    }
+
+                    float smallestDistance = float.MaxValue;
+                    int bestIndex = -1;
+                    for (int vIndex = verticalIndex; vIndex >= 0; vIndex--)
+                    {
+                        for (int j = verticalIndex; j < verticalIndex + _rows; j++)
+                        {
+                            float distance = Vector2.Distance(pos, _iconPositions[j].Position);
+                            if (!_iconPositions[j].IsOccupied && distance < smallestDistance)
+                            {
+                                smallestDistance = distance;
+                                bestIndex = j;
+                            }
+                        }
+
+                        if (bestIndex != -1)
+                        {
+                            desktopIcon.FixIconPosition(_iconPositions[bestIndex].Position);
+                            _iconPositions[bestIndex].IsOccupied = true;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    desktopIcon.FixIconPosition(pos);
+                    _iconPositions[index].IsOccupied = true;
+                }
             }
         }
     }
@@ -125,18 +166,18 @@ public class DesktopUI : IconHolderSpace
     public override int FindProperIndex(Vector2 iconPos)
     {
         int bestVerticalIndex = -1;
-        float smallestDifference = float.MaxValue;
+        float smallestDistance = float.MaxValue;
         foreach (KeyPosition keyPos in _verticalKeyPositions)
         {
             float difference = Mathf.Abs(keyPos.Y - iconPos.y);
-            if (difference < smallestDifference)
+            if (difference < smallestDistance)
             {
-                smallestDifference = difference;
+                smallestDistance = difference;
                 bestVerticalIndex = keyPos.Index;
             }
         }
 
-        float smallestDistance = float.MaxValue;
+        smallestDistance = float.MaxValue;
         int bestIndex = -1;
         for (int i = bestVerticalIndex; i < bestVerticalIndex + _rows; i++)
         {
@@ -154,18 +195,18 @@ public class DesktopUI : IconHolderSpace
     public Vector2 FindProperPosition(Vector2 iconPos)
     {
         int bestVerticalIndex = -1;
-        float smallestDifference = float.MaxValue;
+        float smallestDistance = float.MaxValue;
         foreach (KeyPosition keyPos in _verticalKeyPositions)
         {
             float difference = Mathf.Abs(keyPos.Y - iconPos.y);
-            if (difference < smallestDifference)
+            if (difference < smallestDistance)
             {
-                smallestDifference = difference;
+                smallestDistance = difference;
                 bestVerticalIndex = keyPos.Index;
             }
         }
 
-        float smallestDistance = float.MaxValue;
+        smallestDistance = float.MaxValue;
         int bestIndex = -1;
         for (int i = bestVerticalIndex; i < bestVerticalIndex + _rows; i++)
         {
@@ -194,7 +235,6 @@ public class DesktopUI : IconHolderSpace
 
     public bool IsClosestPositionFree(Vector2 position)
     {
-        //Debug.Log(!_iconPositions[FindProperIndex(position)].IsOccupied);
         return !_iconPositions[FindProperIndex(position)].IsOccupied;
     }
 

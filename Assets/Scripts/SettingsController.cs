@@ -63,6 +63,6 @@ public class SettingsController : MonoBehaviour
         Screen.SetResolution(_filteredResolutions[index].width, _filteredResolutions[index].height,
                 FullScreenMode.FullScreenWindow, _filteredResolutions[index].refreshRateRatio);
 
-        DOVirtual.DelayedCall(0.1f, () => OnResolutionChanged?.Invoke());
+        DOVirtual.DelayedCall(0.2f, () => OnResolutionChanged?.Invoke());
     }
 }
