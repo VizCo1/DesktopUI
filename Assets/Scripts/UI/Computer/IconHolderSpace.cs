@@ -45,30 +45,30 @@ public class IconHolderSpace : MonoBehaviour
         return -1;
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    _iconPositions = new IconPosition[_rows * _columns];
+    protected virtual void OnDrawGizmos()
+    {
+        _iconPositions = new IconPosition[_rows * _columns];
 
-    //    Vector2 initialPos = _initialPosTranform.position;
-    //    float width = _iconWidth + _spacing.x;
-    //    float height = _iconHeight + _spacing.y;
+        Vector2 initialPos = _initialPosTranform.position;
+        float width = _iconWidth + _spacing.x;
+        float height = _iconHeight + _spacing.y;
 
-    //    for (int y = 0; y < _columns; y++)
-    //    {
-    //        for (int x = 0; x < _rows; x++)
-    //        {
-    //            Vector2 pos = initialPos + new Vector2(width * x, height * -y) * GetComponentInParent<Canvas>().scaleFactor;
-    //            _iconPositions[y * _rows + x] = new IconPosition(pos, false);
-    //        }
-    //    }
+        for (int y = 0; y < _columns; y++)
+        {
+            for (int x = 0; x < _rows; x++)
+            {
+                Vector2 pos = initialPos + new Vector2(width * x, height * -y) * GetComponentInParent<Canvas>().scaleFactor;
+                _iconPositions[y * _rows + x] = new IconPosition(pos, false);
+            }
+        }
 
-    //    Gizmos.color = Color.yellow;
-    //    foreach (IconPosition iconPosition in _iconPositions)
-    //    {
-    //        Gizmos.DrawCube(iconPosition.Position, new Vector2(_iconWidth * GetComponentInParent<Canvas>().scaleFactor,
-    //            _iconHeight * GetComponentInParent<Canvas>().scaleFactor));
-    //    }
-    //}
+        Gizmos.color = Color.yellow;
+        foreach (IconPosition iconPosition in _iconPositions)
+        {
+            Gizmos.DrawWireCube(iconPosition.Position, new Vector2(_iconWidth * GetComponentInParent<Canvas>().scaleFactor,
+                _iconHeight * GetComponentInParent<Canvas>().scaleFactor));
+        }
+    }
 
     protected struct IconPosition
     {

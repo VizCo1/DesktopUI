@@ -1,7 +1,9 @@
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using VInspector;
 
 public class SettingsWindow : Window
 {
@@ -11,7 +13,10 @@ public class SettingsWindow : Window
     private Resolution[] _resolutions;
     private List<Resolution> _filteredResolutions;
 
-    //public event Action OnResolutionChanged;
+    public event Action OnResolutionChanged;
+
+    [SerializeField] DesktopUI desktopUI;
+    [SerializeField] BarUI barUI;
 
     protected override void Start()
     {
@@ -21,11 +26,30 @@ public class SettingsWindow : Window
 
         _resolutionsDropdown.onValueChanged.AddListener((int index) =>
         {
+            
             Screen.SetResolution(_filteredResolutions[index].width, _filteredResolutions[index].height,
-                FullScreenMode.ExclusiveFullScreen, _filteredResolutions[index].refreshRateRatio);
+                FullScreenMode.FullScreenWindow, _filteredResolutions[index].refreshRateRatio);
 
-            Debug.Log(Screen.currentResolution);
+            //OnResolutionChanged?.Invoke();
+
+            DOVirtual.DelayedCall(0.2f, () =>
+            {
+                barUI.InitializeSpace();
+                desktopUI.InitializeSpace();
+                desktopUI.FixAllIcons();
+                // Fill all desktop icon position!!!
+            });
         });
+    }
+
+    [Button]
+    public void Do()
+    {
+        barUI.InitializeSpace();
+        desktopUI.InitializeSpace();
+
+        desktopUI.FixAllIcons();
+        barUI.FixAllIcons();
     }
 
     private void InitResolutionsDropdown()

@@ -1,11 +1,26 @@
+using DG.Tweening;
+using System;
 using UnityEngine;
 
 public class DesktopUI : IconHolderSpace
 {
     private KeyPosition[] _verticalKeyPositions;
+    private RectTransform _rectTransform;
+
+    private int _initialColumns;
+    private float _initialSpacinY;
+
+    private void Awake()
+    {
+        _rectTransform = GetComponent<RectTransform>();
+        _initialColumns = _columns;
+        _initialSpacinY = _spacing.y;
+    }
 
     public override void InitializeSpace()
     {
+        AdjustVerticalSpace();
+
         _iconPositions = new IconPosition[_rows * _columns];
         _verticalKeyPositions = new KeyPosition[_iconPositions.Length / _rows];
 
@@ -33,6 +48,65 @@ public class DesktopUI : IconHolderSpace
         _iconTemplate.SetActive(false);
     }
 
+    private void AdjustVerticalSpace()
+    {
+        float ySpacing = _initialSpacinY;
+        int columns = _initialColumns;
+        float iconHeight = _iconHeight;
+
+        for (int i = 0; i < 10; i++)
+        {
+            float nextHeight = (columns + 1) * (ySpacing + _iconHeight);
+
+            if (nextHeight < _rectTransform.rect.height)
+            {
+                columns++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        _columns = columns;
+        
+        for (int i = 0; i < 20; i++)
+        {
+            float nextHeight = (columns) * (ySpacing + 1 + iconHeight + 1);
+
+            if (nextHeight < _rectTransform.rect.height)
+            {
+                ySpacing++;
+                iconHeight++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        _spacing.y = ySpacing;
+        _iconHeight = iconHeight;
+    }
+
+    public void FixAllIcons()
+    {
+        for (int i = 0; i < _iconContainer.childCount; i++)
+        {
+            if (_iconContainer.GetChild(i).gameObject != _iconTemplate)
+            {
+                DesktopIcon desktopIcon = _iconContainer.GetChild(i).GetComponent<DesktopIcon>();
+
+                Vector2 pos = FindProperPosition(desktopIcon.transform.position);
+
+                desktopIcon.FixIconPosition(pos);
+
+                int index = FindProperIndex(pos);
+                _iconPositions[index].IsOccupied = true;
+            }
+        }
+    }
+
     public override GameObject AddIcon(int applicationID, ApplicationIcon minigameIcon)
     {
         GameObject iconGO = Instantiate(_iconTemplate, _iconContainer);
@@ -54,7 +128,7 @@ public class DesktopUI : IconHolderSpace
         float smallestDifference = float.MaxValue;
         foreach (KeyPosition keyPos in _verticalKeyPositions)
         {
-            float difference = Mathf.Abs((keyPos.Y) - iconPos.y);
+            float difference = Mathf.Abs(keyPos.Y - iconPos.y);
             if (difference < smallestDifference)
             {
                 smallestDifference = difference;
@@ -83,7 +157,7 @@ public class DesktopUI : IconHolderSpace
         float smallestDifference = float.MaxValue;
         foreach (KeyPosition keyPos in _verticalKeyPositions)
         {
-            float difference = Mathf.Abs((keyPos.Y - iconPos.y));
+            float difference = Mathf.Abs(keyPos.Y - iconPos.y);
             if (difference < smallestDifference)
             {
                 smallestDifference = difference;
@@ -106,21 +180,21 @@ public class DesktopUI : IconHolderSpace
         return _iconPositions[bestIndex].Position;
     }
 
-    // Previous position was occupied, new position was free
     public void SwapIconPositionStatus(GameObject icon, Vector2 pos)
     {
-        int index1 = (FindProperIndex(icon.transform.position));
-        int index2 = (FindProperIndex(pos));
+        int index1 = FindProperIndex(icon.transform.position);
+        int index2 = FindProperIndex(pos);
 
         if (index1 != index2)
         {
-            _iconPositions[index1].IsOccupied = true; // New pos is occupied
-            _iconPositions[index2].IsOccupied = false; // Previous pos is NOT occupied
+            _iconPositions[index1].IsOccupied = true; // New pos is now OCCUPIED
+            _iconPositions[index2].IsOccupied = false; // Previous pos is now FREE
         }
     }
 
     public bool IsClosestPositionFree(Vector2 position)
     {
+        //Debug.Log(!_iconPositions[FindProperIndex(position)].IsOccupied);
         return !_iconPositions[FindProperIndex(position)].IsOccupied;
     }
 

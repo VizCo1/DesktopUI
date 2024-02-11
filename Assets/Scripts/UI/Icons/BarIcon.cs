@@ -32,7 +32,8 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
     {
         _icon.onClick.AddListener(() =>
         {
-            if (_barUI.GetPosition(Index) == new Vector2(transform.position.x, transform.position.y))
+            Vector2 expectedPosition = _barUI.GetPosition(Index);
+            if (new Vector2((int)expectedPosition.x, (int)expectedPosition.y) == new Vector2((int)transform.position.x, (int)transform.position.y))
             {
                 ComputerController.Instance.HandleBarIconClicked(this); 
                 PlayClickedFeedbacks();

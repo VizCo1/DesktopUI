@@ -37,6 +37,19 @@ public class BarUI : IconHolderSpace
         _iconTemplate.SetActive(false);
     }
 
+    public void FixAllIcons()
+    {
+        for (int i = 0; i < _iconContainer.childCount; i++)
+        {
+            if (_iconContainer.GetChild(i).gameObject != _iconTemplate)
+            {
+                BarIcon barIcon = _iconContainer.GetChild(i).GetComponent<BarIcon>();
+
+                _iconPositions[barIcon.Index].IsOccupied = true;
+            }
+        }
+    }
+
     public override GameObject AddIcon(int applicationID, ApplicationIcon minigameIcon)
     {
         // Reuse or create new icon
