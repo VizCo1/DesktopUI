@@ -26,16 +26,15 @@ public class Window : MonoBehaviour
         });
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         _closeButton.onClick.RemoveAllListeners();
         _minimizeButton.onClick.RemoveAllListeners();
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         _closeButton.interactable = true;
-
     }
 
     public virtual void Open()

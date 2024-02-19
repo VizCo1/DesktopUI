@@ -1,33 +1,27 @@
-using DG.Tweening;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SettingsController : MonoBehaviour
+[CreateAssetMenu(fileName = "SettingsDataSO", menuName = "ScriptableObjects/SettingsDataSO")]
+public class SettingsDataSO : ScriptableObject
 {
+
+    private List<string> _resolutionsList;
     private List<Resolution> _filteredResolutions;
-    private List<string> _resolutionsOptions;
 
-    public static SettingsController Instance { get; private set; }
+    // Properties
+    public List<string> ResolutionsList { get => _resolutionsList; set => _resolutionsList = value; }
+    public List<Resolution> FilteredResolutions { get => _filteredResolutions; set => _filteredResolutions = value; }
 
-    public event Action OnResolutionChanged;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
-    private void Start()
+    private void OnEnable()
     {
         InitializeFilteredResolutions();
     }
 
     private void InitializeFilteredResolutions()
     {
+        _resolutionsList = new List<string>();
         _filteredResolutions = new List<Resolution>();
 
-        _resolutionsOptions = new List<string>();
         RefreshRate currentRefreshRate = Screen.currentResolution.refreshRateRatio;
         foreach (Resolution res in Screen.resolutions)
         {
@@ -35,12 +29,10 @@ public class SettingsController : MonoBehaviour
             {
                 _filteredResolutions.Add(res);
                 string resString = $"{res.width} x {res.height}";
-                _resolutionsOptions.Add(resString);
+                _resolutionsList.Add(resString);
             }
         }
     }
-
-    public List<string> GetResolutionOptions() => _resolutionsOptions;
 
     public int GetResolutionIndex()
     {
@@ -56,13 +48,5 @@ public class SettingsController : MonoBehaviour
         }
 
         return selectedResolutionIndex;
-    }
-
-    public void ChangeResolution(int index)
-    {
-        Screen.SetResolution(_filteredResolutions[index].width, _filteredResolutions[index].height,
-                FullScreenMode.FullScreenWindow, _filteredResolutions[index].refreshRateRatio);
-
-        DOVirtual.DelayedCall(0.2f, () => OnResolutionChanged?.Invoke());
     }
 }

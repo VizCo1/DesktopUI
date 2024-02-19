@@ -17,16 +17,6 @@ public class BarUI : IconHolderSpace
         _barIconsList = new List<BarIcon>();
     }
 
-    private void Start()
-    {
-        SettingsController.Instance.OnResolutionChanged += SettingsController_OnResolutionChanged;
-    }
-
-    private void OnDestroy()
-    {
-        SettingsController.Instance.OnResolutionChanged -= SettingsController_OnResolutionChanged;
-    }
-
     private void SettingsController_OnResolutionChanged()
     {
         InitializeSpace();
