@@ -7,7 +7,7 @@ public static class SettingsEvents
     public static Action<int> ResolutionDropdownChanged;
 
     // Model -> Presenter
-    //public static Action ModelResolutionChanged;
+    //public static Action<List<string>, int> ModelResolutionChanged;
 
     // Presenter --> View
     public static Action<List<string>, int> ResolutionSet;
@@ -15,6 +15,7 @@ public static class SettingsEvents
     // Presenter --> Model
     public static Action<int> ResolutionChanged;
 
+    // ----------------------------
 
     // Presenter --> Computer
     public static Action OnResolutionChanged;
