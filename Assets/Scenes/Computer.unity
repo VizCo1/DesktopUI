@@ -1272,40 +1272,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5107642248994646617, guid: 1fa4883efc434ec4b8aacb47f621926a, type: 3}
-      propertyPath: barUI
+      propertyPath: fpsText
       value: 
-      objectReference: {fileID: 1441735901}
-    - target: {fileID: 5107642248994646617, guid: 1fa4883efc434ec4b8aacb47f621926a, type: 3}
-      propertyPath: desktopUI
-      value: 
-      objectReference: {fileID: 1340470201}
+      objectReference: {fileID: 0}
     - target: {fileID: 5652941406212638582, guid: 1fa4883efc434ec4b8aacb47f621926a, type: 3}
       propertyPath: m_Name
       value: SettingsWindow
-      objectReference: {fileID: 0}
-    - target: {fileID: 5652941406212638582, guid: 1fa4883efc434ec4b8aacb47f621926a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6513176979053213780, guid: 1fa4883efc434ec4b8aacb47f621926a, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6513176979053213780, guid: 1fa4883efc434ec4b8aacb47f621926a, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7420491534123258490, guid: 1fa4883efc434ec4b8aacb47f621926a, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7420491534123258490, guid: 1fa4883efc434ec4b8aacb47f621926a, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7420491534123258490, guid: 1fa4883efc434ec4b8aacb47f621926a, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
