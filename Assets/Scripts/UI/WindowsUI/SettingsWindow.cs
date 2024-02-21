@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class SettingsWindow : Window
 {
@@ -14,17 +12,23 @@ public class SettingsWindow : Window
 
     [Header("Toggles")]
     [SerializeField] private Toggle _vsyncToggle;
+    
+    [Header("Sliders")]
+    [SerializeField] private Slider _systemVolumeSlider;
 
-    protected override void OnEnable()
+    [Header("Buttons")]
+    [SerializeField] private Button _applySettingsButton;
+
+    private void Awake()
     {
-        base.OnEnable();
-
         SubcribeToEvents();
         RegisterCallbacks();
     }
 
-    private void OnDisable()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
+
         UnsubscribeFromEvents();
         UnRegisterCallbacks();
     }
@@ -34,6 +38,7 @@ public class SettingsWindow : Window
         base.Start();
 
         _frameRateCapDropdown.interactable = !_vsyncToggle.isOn;
+        SoundsManager.Instance.VolumeUI = _systemVolumeSlider.value;
     }
 
     private void SubcribeToEvents()
@@ -43,6 +48,7 @@ public class SettingsWindow : Window
         SettingsEvents.DisplayModeSet += InitDisplayModeDropdown;
         SettingsEvents.FrameRateSet += InitFrameRateCapDropdown;
         SettingsEvents.VSyncSet += InitVSyncToggle;
+        SettingsEvents.VolumeUISet += InitSystemVolume;
     }
 
     private void UnsubscribeFromEvents()
@@ -52,36 +58,38 @@ public class SettingsWindow : Window
         SettingsEvents.DisplayModeSet -= InitDisplayModeDropdown;
         SettingsEvents.FrameRateSet -= InitFrameRateCapDropdown;
         SettingsEvents.VSyncSet -= InitVSyncToggle;
+        SettingsEvents.VolumeUISet -= InitSystemVolume;
     }
 
     private void RegisterCallbacks()
     {
-        _resolutionsDropdown.onValueChanged.AddListener((int index) =>
+        _systemVolumeSlider.onValueChanged.AddListener((float value) =>
         {
-            SettingsEvents.ResolutionDropdownChanged?.Invoke(index);
-        });
-
-        _displayModeDropdown.onValueChanged.AddListener((int index) =>
-        {
-            SettingsEvents.DisplayModeDropdownChanged?.Invoke(index);
-        });
-
-        _frameRateCapDropdown.onValueChanged.AddListener((int index) =>
-        {
-            SettingsEvents.FrameRateDropdownChanged?.Invoke(index);
+            SoundsManager.Instance.VolumeUI = value;
         });
 
         _vsyncToggle.onValueChanged.AddListener((bool value) =>
         {
-            SettingsEvents.VSyncToggleChanged?.Invoke( value ? 1 : 0);
-
             _frameRateCapDropdown.interactable = !value;
+        });
+
+        _applySettingsButton.onClick.AddListener(() =>
+        {
+            //SoundsManager.Instance.PlayUISound();
+
+            SettingsEvents.ResolutionDropdownChanged?.Invoke(_resolutionsDropdown.value);
+            SettingsEvents.DisplayModeDropdownChanged?.Invoke(_displayModeDropdown.value);
+            SettingsEvents.FrameRateDropdownChanged?.Invoke(_frameRateCapDropdown.value);
+            SettingsEvents.VSyncToggleChanged?.Invoke(_vsyncToggle.isOn ? 1 : 0);
+            SettingsEvents.VolumeUISliderChanged?.Invoke(_systemVolumeSlider.value);
         });
     }
 
     private void UnRegisterCallbacks()
     {
-        _resolutionsDropdown.onValueChanged.RemoveAllListeners();
+        _systemVolumeSlider.onValueChanged.RemoveAllListeners();
+        _applySettingsButton.onClick.RemoveAllListeners();
+        _vsyncToggle.onValueChanged.RemoveAllListeners();
     }
 
     private void InitResolutionsDropdown(List<string> resolutionsList, int index)
@@ -116,5 +124,10 @@ public class SettingsWindow : Window
     private void InitVSyncToggle(bool value)
     {
         _vsyncToggle.isOn = value;
+    }
+
+    private void InitSystemVolume(float volume)
+    {
+        _systemVolumeSlider.value = volume;
     }
 }
