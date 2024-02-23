@@ -4,32 +4,28 @@ using UnityEngine;
 
 public static class PersistentSettingsManager
 {
-    private static string RESOLUTION_WIDTH = "ResolutionWidth";
-    private static string RESOLUTION_HEIGHT = "ResolutionHeight";
+    private const string RESOLUTION_WIDTH = "ResolutionWidth";
+    private const string RESOLUTION_HEIGHT = "ResolutionHeight";
 
-    private static string DISPLAY_MODE = "DisplayMode";
+    private const string DISPLAY_MODE = "DisplayMode";
 
-    private static string SYSTEM_VOLUME = "SystemVolume";
+    private const string SYSTEM_VOLUME = "SystemVolume";
 
-    private static string FRAME_RATE = "FrameRate";
+    private const string FRAME_RATE = "FrameRate";
 
-    private static string VSYNC = "VSync";
-
+    private const string VSYNC = "VSync";
 
     public static Resolution LoadResolution()
     {
-        int width = PlayerPrefs.GetInt(RESOLUTION_WIDTH, -1);
-        int height = PlayerPrefs.GetInt(RESOLUTION_HEIGHT, -1);
+        int width = PlayerPrefs.GetInt(RESOLUTION_WIDTH, 1920);
+        int height = PlayerPrefs.GetInt(RESOLUTION_HEIGHT, 1080);
 
-        Resolution res = new Resolution();
-        res.width = width;
-        res.height = height;
-        res.refreshRateRatio = Screen.currentResolution.refreshRateRatio;
-
-        if (width < 0 || height < 0)
+        Resolution res = new Resolution()
         {
-            return Screen.currentResolution;
-        }
+            width = width,
+            height = height,
+            refreshRateRatio = Screen.currentResolution.refreshRateRatio
+        };
 
         return res;
     }

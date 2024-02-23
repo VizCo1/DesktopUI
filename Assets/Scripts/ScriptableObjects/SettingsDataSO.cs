@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [CreateAssetMenu(fileName = "SettingsDataSO", menuName = "ScriptableObjects/SettingsDataSO")]
-public class SettingsDataSO : ScriptableObject
+public class SettingsDataSO : ScriptableObject, IOrderedInitialization
 {
     // Resolutions
     private List<string> _resolutionsList;
@@ -45,16 +46,20 @@ public class SettingsDataSO : ScriptableObject
 
     private void OnEnable()
     {
+        Debug.Log("OnEnable model");
+
         // Events from Presenter
         SettingsEvents.ResolutionChanged += SettingsEvents_ResolutionChanged;
         SettingsEvents.DisplayModeChanged += SettingsEvents_DisplayModeChanged;
         SettingsEvents.FrameRateChanged += SettingsEvents_FrameRateChanged;
         SettingsEvents.VSyncChanged += SettingsEvents_VSyncChanged;
-        SettingsEvents.VolumeUIChanged += SettingsEvents_VolumeUIChanged;
+        SettingsEvents.VolumeUIChanged += SettingsEvents_VolumeUIChanged;       
     }
 
     private void OnDisable()
     {
+        Debug.Log("OnDisable model");
+
         // Events from Presenter
         SettingsEvents.ResolutionChanged -= SettingsEvents_ResolutionChanged;
         SettingsEvents.DisplayModeChanged -= SettingsEvents_DisplayModeChanged;
@@ -65,6 +70,12 @@ public class SettingsDataSO : ScriptableObject
 
     public void Initialize()
     {
+        LoadSettings();
+        ApplySettings();        
+    }
+
+    public void InitializeSettings()
+    {
         InitializeFilteredResolutions();
         InitializeDisplayModes();
         InitializeFrameRates();
@@ -72,36 +83,88 @@ public class SettingsDataSO : ScriptableObject
         InitializeVolumeUI();
     }
 
+    #region Load settings
+
+    private void LoadSettings()
+    {
+        _currentResolution = PersistentSettingsManager.LoadResolution();
+        _fullscreenMode = PersistentSettingsManager.LoadDisplayMode();
+        _currentFrameRate = PersistentSettingsManager.LoadFrameRate();
+        _isVSync = PersistentSettingsManager.LoadVSync();
+        _volumeUI = PersistentSettingsManager.LoadSystemVolume();
+    }
+
+    #endregion
+
+    #region Apply settings
+
+    private void ApplySettings()
+    {
+        ApplyResolutionAndScreenMode();
+        ApplyTargetFrameRate();
+        ApplyVSync();
+        ApplyVolumeUI();
+    }
+
+    private void ApplyResolutionAndScreenMode()
+    {
+        Screen.SetResolution(_currentResolution.width, _currentResolution.height, _fullscreenMode);
+    }
+
+    private void ApplyTargetFrameRate()
+    {
+        Application.targetFrameRate = _currentFrameRate;
+    }
+
+    private void ApplyVSync()
+    {
+        QualitySettings.vSyncCount = _isVSync ? 1 : 0;
+    }
+
+    private void ApplyVolumeUI()
+    {
+        SoundsManager.Instance.VolumeUI = _volumeUI;
+    }
+
+    #endregion
+
     #region Events from the presenter
 
     private void SettingsEvents_ResolutionChanged(int index)
     {
         _currentResolution = _filteredResolutions[index];
         PersistentSettingsManager.SaveResolution(_currentResolution);
+        //ApplyResolution();
+        Debug.Log("A");
     }
 
     private void SettingsEvents_DisplayModeChanged(int index)
     {
         _fullscreenMode = Enum.Parse<FullScreenMode>(_displayModesList[index]);
         PersistentSettingsManager.SaveDisplayMode(_fullscreenMode);
+        Debug.Log("B");
+        ApplyResolutionAndScreenMode();
     }
 
     private void SettingsEvents_FrameRateChanged(int index)
     {
         _currentFrameRate = _frameRatesList[index];
         PersistentSettingsManager.SaveFrameRate(_currentFrameRate);
+        ApplyTargetFrameRate();
     }
 
     private void SettingsEvents_VSyncChanged(bool value)
     {
         _isVSync = value;
         PersistentSettingsManager.SaveVSync(_isVSync);
+        ApplyVSync();
     }
 
     private void SettingsEvents_VolumeUIChanged(float value)
     {
         _volumeUI = value;
         PersistentSettingsManager.SaveSystemVolume(_volumeUI);
+        ApplyVolumeUI();
     }
 
     #endregion
@@ -112,8 +175,6 @@ public class SettingsDataSO : ScriptableObject
     {
         _resolutionsList = new List<string>();
         _filteredResolutions = new List<Resolution>();
-
-        _currentResolution = PersistentSettingsManager.LoadResolution();
 
         RefreshRate currentRefreshRate = Screen.currentResolution.refreshRateRatio;
         foreach (Resolution res in Screen.resolutions)
@@ -131,8 +192,6 @@ public class SettingsDataSO : ScriptableObject
 
     private void InitializeDisplayModes()
     {
-        _fullscreenMode = PersistentSettingsManager.LoadDisplayMode();
-
         _displayModesList = new List<string>
         {
             FullScreenMode.FullScreenWindow.ToString(),
@@ -144,8 +203,6 @@ public class SettingsDataSO : ScriptableObject
 
     private void InitializeFrameRates()
     {
-        _currentFrameRate = PersistentSettingsManager.LoadFrameRate();
-
         _frameRatesList = new List<int>
         {
             30,             
@@ -159,13 +216,11 @@ public class SettingsDataSO : ScriptableObject
 
     private void InitializeVSync()
     {
-        _isVSync = PersistentSettingsManager.LoadVSync();
         SettingsEvents.ModelVSyncChanged?.Invoke(_isVSync);
     }
 
     private void InitializeVolumeUI()
     {
-        _volumeUI = PersistentSettingsManager.LoadSystemVolume();
         SettingsEvents.ModelVolumeUIChanged?.Invoke(_volumeUI);
     }
 

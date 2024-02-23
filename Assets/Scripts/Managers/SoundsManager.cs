@@ -21,6 +21,8 @@ public class SoundsManager : MonoBehaviour
         Instance = this;
 
         _audioSource = GetComponent<AudioSource>();
+
+        Debug.Log("Awake SoundsManager");
     }
 
     #region PlayAudioLogic
