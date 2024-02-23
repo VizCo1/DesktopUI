@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,8 +47,6 @@ public class SettingsDataSO : ScriptableObject, IOrderedInitialization
 
     private void OnEnable()
     {
-        Debug.Log("OnEnable model");
-
         // Events from Presenter
         SettingsEvents.ResolutionChanged += SettingsEvents_ResolutionChanged;
         SettingsEvents.DisplayModeChanged += SettingsEvents_DisplayModeChanged;
@@ -58,8 +57,6 @@ public class SettingsDataSO : ScriptableObject, IOrderedInitialization
 
     private void OnDisable()
     {
-        Debug.Log("OnDisable model");
-
         // Events from Presenter
         SettingsEvents.ResolutionChanged -= SettingsEvents_ResolutionChanged;
         SettingsEvents.DisplayModeChanged -= SettingsEvents_DisplayModeChanged;
@@ -109,6 +106,7 @@ public class SettingsDataSO : ScriptableObject, IOrderedInitialization
     private void ApplyResolutionAndScreenMode()
     {
         Screen.SetResolution(_currentResolution.width, _currentResolution.height, _fullscreenMode);
+        DOVirtual.DelayedCall(0.2f, () => SettingsEvents.OnResolutionChanged?.Invoke());
     }
 
     private void ApplyTargetFrameRate()
@@ -134,15 +132,13 @@ public class SettingsDataSO : ScriptableObject, IOrderedInitialization
     {
         _currentResolution = _filteredResolutions[index];
         PersistentSettingsManager.SaveResolution(_currentResolution);
-        //ApplyResolution();
-        Debug.Log("A");
+        //ApplyResolutionAndScreenMode();
     }
 
     private void SettingsEvents_DisplayModeChanged(int index)
     {
         _fullscreenMode = Enum.Parse<FullScreenMode>(_displayModesList[index]);
         PersistentSettingsManager.SaveDisplayMode(_fullscreenMode);
-        Debug.Log("B");
         ApplyResolutionAndScreenMode();
     }
 
