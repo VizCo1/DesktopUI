@@ -1,8 +1,11 @@
+using DG.Tweening;
 using MoreMountains.Feedbacks;
 using System;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ComputerController : MonoBehaviour
 {
@@ -69,7 +72,6 @@ public class ComputerController : MonoBehaviour
     private int _minigameAmount = 7;
 
     private int _money;
-
     public static ComputerController Instance { get; private set; }
 
     private void Awake()
@@ -229,17 +231,23 @@ public class ComputerController : MonoBehaviour
 
     #region Open Window
 
-    private void OpenWindowWithDesktopIcon(DesktopIcon icon, bool prepareRenderTexture)
+    private void OpenWindowWithDesktopIcon(DesktopIcon icon, bool isMinigame)
     {
         if (_desktopIconAppInfoDictionary.TryGetValue(icon, out ApplicationInformation appInfo))
         {
             SetIsWindowState();
 
-            if (prepareRenderTexture)
+            if (isMinigame)
             {
-                ApplicationWindow appID = (ApplicationWindow) icon.ApplicationID;
-                appInfo.Window.GetComponent<MinigameWindow>().SetApplicationRenderTexture(GetMinigameRenderTexture(appID));
-                SceneManager.LoadScene(appID.ToString(), LoadSceneMode.Additive);
+                MinigameWindow minigameWindow = appInfo.Window.GetComponent<MinigameWindow>();
+                if (!minigameWindow.IsRenderTexturePrepared())
+                {
+                    ApplicationWindow appID = (ApplicationWindow) icon.ApplicationID;
+                    minigameWindow.SetApplicationRenderTexture(GetMinigameRenderTexture(appID));
+                    SceneManager.LoadScene(appID.ToString(), LoadSceneMode.Additive);
+                }
+                //DOVirtual.DelayedCall(0.2f, () => MinigameInputHandling._rawImageRectTransform = minigameWindow.GetRawImageRectTransform());
+                MinigameInputHandling._rawImageRectTransform = minigameWindow.GetRawImageRectTransform();
             }
 
             appInfo.Window.gameObject.SetActive(true);

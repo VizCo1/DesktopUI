@@ -79,6 +79,7 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
         _barUI.IsMovingIcon = true;
         _barUI.SetMovingIcon(this);
         transform.SetAsFirstSibling();
+        SoundsManager.Instance.PlayUISound();
     }
 
     public void SwapPosWith(BarIcon movingIcon)

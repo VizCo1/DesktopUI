@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -41,9 +40,8 @@ public class LoadingManager : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
 
-        yield return new WaitForSeconds(0.25f); // Loading pause
+        //yield return new WaitForSeconds(0.25f); // Loading pause
 
-        GC.Collect();
         asyncLoad.allowSceneActivation = true; // Load scene
     }
 }

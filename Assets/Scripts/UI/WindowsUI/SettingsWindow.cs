@@ -75,7 +75,7 @@ public class SettingsWindow : Window
 
         _applySettingsButton.onClick.AddListener(() =>
         {
-            //SoundsManager.Instance.PlayUISound();
+            SoundsManager.Instance.PlayConfirmSound();
 
             SettingsEvents.ResolutionDropdownChanged?.Invoke(_resolutionsDropdown.value);
             SettingsEvents.DisplayModeDropdownChanged?.Invoke(_displayModeDropdown.value);

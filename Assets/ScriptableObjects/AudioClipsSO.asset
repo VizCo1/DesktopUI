@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98ce6344dfad0b547a6fd8a89b256355, type: 3}
   m_Name: AudioClipsSO
   m_EditorClassIdentifier: 
-  soundsUI:
-  - {fileID: 8300000, guid: 1e799256e82e78545b5e2f95a726b4dd, type: 3}
-  - {fileID: 8300000, guid: a45ac0795b3b09a49b8c3477ee0f48ef, type: 3}
-  - {fileID: 8300000, guid: 9448a4ba4408ded45b7237c8993aa731, type: 3}
-  - {fileID: 8300000, guid: 26ed85826d39a9043b08a734ff29b830, type: 3}
-  - {fileID: 8300000, guid: e2f577b0c1c406247a604f0a532771fe, type: 3}
+  UIsounds:
+  - {fileID: 8300000, guid: f7002945d342b244ebcbfc8595cbb155, type: 3}
+  - {fileID: 8300000, guid: 552c7925bbc78ef49b341ea23f3fc872, type: 3}
+  confirmSound: {fileID: 8300000, guid: e7ebcd62460f0a84dae14b59623efae4, type: 3}

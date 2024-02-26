@@ -68,6 +68,7 @@ public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoin
             if (++_clicks == _clicksToOpen)
             {
                 ComputerController.Instance.HandleDesktopIconClicked(this);
+                SoundsManager.Instance.PlayUISound();
                 _clicks = 0;
             }
 

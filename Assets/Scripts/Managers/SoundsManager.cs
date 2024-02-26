@@ -25,15 +25,15 @@ public class SoundsManager : MonoBehaviour
 
     #region PlayAudioLogic
 
-    private void Play3DSound(AudioClip audioClip, Vector3 position)
+    private void Play3DSound(AudioClip audioClip, Vector3 position, float volumeMultiplier = 1f)
     {
-        AudioSource.PlayClipAtPoint(audioClip, position, _volumeUI);
+        AudioSource.PlayClipAtPoint(audioClip, position, _volumeUI * volumeMultiplier);
     }
 
-    private void Play2DSound(AudioClip audioClip)
+    private void Play2DSound(AudioClip audioClip, float volumeMultiplier = 1f)
     {
         // Play audio
-        _audioSource.PlayOneShot(audioClip, _volumeUI);
+        _audioSource.PlayOneShot(audioClip, _volumeUI * volumeMultiplier);
     }
 
     #endregion
@@ -42,7 +42,12 @@ public class SoundsManager : MonoBehaviour
 
     public void PlayUISound()
     {
-        Play2DSound(_audioClipsSO.soundsUI[Random.Range(0, _audioClipsSO.soundsUI.Length)]);
+        Play2DSound(_audioClipsSO.UIsounds[Random.Range(0, _audioClipsSO.UIsounds.Length)]);
+    }
+
+    public void PlayConfirmSound()
+    {
+        Play2DSound(_audioClipsSO.confirmSound, 0.75f);
     }
 
     #endregion
