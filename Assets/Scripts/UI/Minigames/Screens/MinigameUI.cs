@@ -8,7 +8,7 @@ public class MinigameUI : MonoBehaviour
 
     public CanvasGroup CanvasGroup { get; private set; }
 
-    private void Awake()
+    public virtual void Init()
     {
         CanvasGroup = GetComponent<CanvasGroup>();
         CanvasGroup.alpha = 0f;

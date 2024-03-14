@@ -101,8 +101,8 @@ public class ComputerController : MonoBehaviour
     {
         int availableApps = 3;
         int i = 0;
-        // Minigame applications
-        // THIS WILL NEED REFACTORING!!!
+
+        // Start with 3 minigames
         foreach (ApplicationWindow applications in Enum.GetValues(typeof(ApplicationWindow)))
         {
             if (i >= availableApps)
@@ -113,7 +113,6 @@ public class ComputerController : MonoBehaviour
             _desktopUI.AddIcon((int) applications, _applicationsIconInfoSO.applications[(int) applications]);
             i++;
         }
-        //
 
         // Store application
         _desktopUI.AddIcon((int) ApplicationWindow.Store, _applicationsIconInfoSO.applications[(int)ApplicationWindow.Store]);
@@ -163,7 +162,7 @@ public class ComputerController : MonoBehaviour
             else
             {
                 int index = desktopIcon.ApplicationID - _minigameAmount;
-                window = _windowsUI.CreateApplicationWindow(index);
+                window = _windowsUI.GetApplicationWindow(index);
             }
 
             // Current app icons
@@ -246,8 +245,9 @@ public class ComputerController : MonoBehaviour
                     minigameWindow.SetApplicationRenderTexture(GetMinigameRenderTexture(appID));
                     SceneManager.LoadScene(appID.ToString(), LoadSceneMode.Additive);
                 }
-                //DOVirtual.DelayedCall(0.2f, () => MinigameInputHandling._rawImageRectTransform = minigameWindow.GetRawImageRectTransform());
-                MinigameInputHandling._rawImageRectTransform = minigameWindow.GetRawImageRectTransform();
+                
+                // Save next rawImage rectTransform
+                MinigameInputHandlingHelper.SetNextRawImageRectTransform(minigameWindow.GetRawImageRectTransform());
             }
 
             appInfo.Window.gameObject.SetActive(true);

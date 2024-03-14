@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MinigameHowToPlayUI : MinigameUI
@@ -7,8 +5,10 @@ public class MinigameHowToPlayUI : MinigameUI
     [Header("How to play UI")]
     [SerializeField] private MinigameButton _backButton;
 
-    private void Start()
+    public override void Init()
     {
+        base.Init();
+
         _backButton.OnClicked += BackButton_OnClicked;
     }
 

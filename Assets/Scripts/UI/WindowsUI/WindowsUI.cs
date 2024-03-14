@@ -30,7 +30,7 @@ public class WindowsUI : MonoBehaviour
         return minigameWindow;
     }
 
-    public Window CreateApplicationWindow(int index)
+    public Window GetApplicationWindow(int index)
     {
         return _noMinigameWindows[index];
     }

@@ -14,20 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   applications:
   - icon: {fileID: 21300002, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
-    name: Falling Blocks
+    name: Game 1
   - icon: {fileID: 21300012, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
-    name: Stacking Madness
+    name: Game 2
   - icon: {fileID: 21300008, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
-    name: Speedy Snake
-  - icon: {fileID: 21300014, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
-    name: Placeholder
-  - icon: {fileID: 21300014, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
-    name: Placeholder
-  - icon: {fileID: 21300014, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
-    name: Placeholder
-  - icon: {fileID: 21300014, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
-    name: Placeholder
+    name: Game 3
   - icon: {fileID: 21300006, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
-    name: Minigames store
+    name: Game 4
+  - icon: {fileID: 21300000, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
+    name: Game 5
+  - icon: {fileID: 21300004, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
+    name: Game 6
+  - icon: {fileID: 2657873270443967794, guid: 3da05e9f66c9f254c8875335e7e9179e, type: 3}
+    name: Game 7
+  - icon: {fileID: 21300000, guid: bdd6c77f3b6358b4797992581e75bd64, type: 3}
+    name: Store
   - icon: {fileID: -3820048696943746370, guid: 3da05e9f66c9f254c8875335e7e9179e, type: 3}
     name: Settings

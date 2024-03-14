@@ -10,17 +10,10 @@ public class BarUI : IconHolderSpace
 
     public bool IsMovingIcon { get; set; }
 
-
     private void Awake()
     {
         _iconPool = GetComponent<Pool>();
         _barIconsList = new List<BarIcon>();
-    }
-
-    private void SettingsController_OnResolutionChanged()
-    {
-        InitializeSpace();
-        FixAllIcons();
     }
 
     public override void InitializeSpace()
@@ -69,7 +62,7 @@ public class BarUI : IconHolderSpace
             _barIconsList.Add(barIcon);
             iconGO.SetActive(true);
             //barIcon.Init(GetAvailableStartingPosition());
-            barIcon.Init(GetAvailableStartingIndex(), applicationID, minigameIcon);
+            barIcon.Init(GetAvailableStartingIndex(), minigameIcon);
             return iconGO;
         }
         else
@@ -81,12 +74,16 @@ public class BarUI : IconHolderSpace
 
     public void FixPositionsAndRemoveIcon(BarIcon icon)
     {
-        for (int i = 0; i < _barIconsList.Count; i++)
+        Debug.Log(icon.Index);
+        for (int i = 0; i < _barIconsList.Count; i++) // i = icon.Index
         {
             if (_barIconsList[i].Index > icon.Index)
             {
+                // Update index
+                _barIconsList[i].Index--;
+
                 // Move icon to a free position
-                _barIconsList[i].FixIconPosition(GetPosition(--_barIconsList[i].Index));
+                _barIconsList[i].FixIconPosition(GetPosition(_barIconsList[i].Index));
             }
         }
 

@@ -1067,7 +1067,7 @@ RectTransform:
   m_Father: {fileID: 8681518441961602766}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.44121984, y: 1}
+  m_AnchorMax: {x: 0.44122037, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1488,7 +1488,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Minigame store
+  m_text: Store
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1807,7 +1807,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1215.7838, y: 0}
+  m_AnchoredPosition: {x: 1215.7834, y: 0}
   m_SizeDelta: {x: 4351.567, y: 716.04}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8371837516871395113
@@ -1964,8 +1964,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 576286343239022668}
   m_HandleRect: {fileID: 5935056818089075696}
   m_Direction: 0
-  m_Value: -0.000000100404634
-  m_Size: 0.44121984
+  m_Value: 0
+  m_Size: 0.44122037
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

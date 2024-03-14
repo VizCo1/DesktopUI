@@ -18,7 +18,6 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
     private bool _isSelected = false;
 
     public int Index { get; set; }
-    public int ApplicationID { get; private set; }
 
     private void Awake()
     {
@@ -46,9 +45,8 @@ public class BarIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerE
         _icon.onClick.RemoveAllListeners();
     }
 
-    public void Init(int index, int id, ApplicationIcon minigameIcon)
+    public void Init(int index, ApplicationIcon minigameIcon)
     {
-        ApplicationID = id;
         _iconImage.sprite = minigameIcon.icon;
         Index = index;
         transform.position = _barUI.GetPosition(Index);

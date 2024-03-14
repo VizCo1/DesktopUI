@@ -19,6 +19,22 @@ public class DesktopUI : IconHolderSpace
         _initialIconHeight = _iconHeight;
     }
 
+    private void Start()
+    {
+        SettingsEvents.OnResolutionChanged += SettingsController_OnResolutionChanged;
+    }
+
+    private void OnDestroy()
+    {
+        SettingsEvents.OnResolutionChanged -= SettingsController_OnResolutionChanged;
+    }
+
+    private void SettingsController_OnResolutionChanged()
+    {
+        InitializeSpace();
+        FixAllIcons();
+    }
+
     public override void InitializeSpace()
     {
         AdjustVerticalSpace();

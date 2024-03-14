@@ -7,8 +7,10 @@ public class MinigameMenuUI : MinigameUI
     [SerializeField] private MinigameButton _howToPlayButton;
     [SerializeField] private MinigameButton _scoreboardButton;
 
-    private void Start()
+    public override void Init()
     {
+        base.Init();
+
         _playButton.OnClicked += PlayButton_OnClicked;
 
         _howToPlayButton.OnClicked += HowToPlayButton_OnClicked;

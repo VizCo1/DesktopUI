@@ -21,6 +21,7 @@ public class StoreWindow : Window
 
         FillApplicationsInfo();
         PrepareApplicationsButtons();
+        DisableSoldApplicationsButtons();
     }
 
     public override void Open()
@@ -44,6 +45,17 @@ public class StoreWindow : Window
                     UnlockMinigame(appID);
                 }
             });
+        }
+    }
+
+    private void DisableSoldApplicationsButtons()
+    {
+        for (int i = 0; i < _appContainer.childCount; i++)
+        {
+            if (_minigameInfoSO.minigames[i].sold)
+            {
+                _appContainer.GetChild(i).GetComponent<Button>().interactable = false;
+            }
         }
     }
 
@@ -72,6 +84,19 @@ public class StoreWindow : Window
             ComputerController.Instance.Money -= _minigameInfoSO.minigames[appID].cost;
             _moneyText.SetText(ComputerController.Instance.Money.ToString());
             ComputerController.Instance.AddMinigame(appID);
+        }
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+
+        // Remove listeners from application buttons
+        for (int i = 0; i < _appContainer.childCount; i++)
+        {
+            Button button = _appContainer.GetChild(i).GetComponent<Button>();
+
+            button.onClick.RemoveAllListeners();
         }
     }
 }

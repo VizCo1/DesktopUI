@@ -2319,7 +2319,7 @@ GameObject:
   - component: {fileID: 1607037814}
   - component: {fileID: 1607037816}
   m_Layer: 0
-  m_Name: Minigame1Camera
+  m_Name: Minigame2Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2366,7 +2366,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: 7bfb48f590c8d5b4db25180531592f39, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: 76c234a3b4d7ed641b444f24e205b910, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -2567,7 +2567,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e737c27ae9a3e746a1cfd60a5c6a129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minigameID: 0
 --- !u!114 &1673835345
 MonoBehaviour:
   m_ObjectHideFlags: 0

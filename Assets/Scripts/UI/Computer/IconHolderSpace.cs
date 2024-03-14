@@ -19,22 +19,6 @@ public class IconHolderSpace : MonoBehaviour
 
     protected virtual void FixAllIcons() { }
 
-    private void Start()
-    {
-        SettingsEvents.OnResolutionChanged += SettingsController_OnResolutionChanged;
-    }
-
-    private void OnDestroy()
-    {
-        SettingsEvents.OnResolutionChanged -= SettingsController_OnResolutionChanged;
-    }
-
-    private void SettingsController_OnResolutionChanged()
-    {
-        InitializeSpace();
-        FixAllIcons();
-    }
-
     protected Vector2 GetAvailableStartingPosition()
     {
         for (int i = 0; i < _iconPositions.Length; i++)
@@ -56,6 +40,7 @@ public class IconHolderSpace : MonoBehaviour
             if (!_iconPositions[i].IsOccupied)
             {
                 _iconPositions[i].IsOccupied = true;
+                Debug.Log("Available starting index: " + i);
                 return i;
             }
         }

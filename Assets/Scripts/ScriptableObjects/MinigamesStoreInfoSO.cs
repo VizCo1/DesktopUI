@@ -12,7 +12,7 @@ public class MinigamesStoreInfoSO : ScriptableObject
         [TextAreaAttribute]
         public string description;
         public int cost;
-
+        public bool sold;
     }
 
     public MinigameStore[] minigames;
