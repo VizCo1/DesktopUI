@@ -40,7 +40,6 @@ public class IconHolderSpace : MonoBehaviour
             if (!_iconPositions[i].IsOccupied)
             {
                 _iconPositions[i].IsOccupied = true;
-                Debug.Log("Available starting index: " + i);
                 return i;
             }
         }

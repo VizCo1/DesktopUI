@@ -19,33 +19,40 @@ MonoBehaviour:
       to avoid getting crushed. The speed and complexity increase over time, challenging
       the player's reflexes.
     cost: 100
+    sold: 1
   - icon: {fileID: 21300012, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
     name: Game 2
     description: Players control blocks falling from above and must stack them to
       build the tallest tower possible.
     cost: 150
+    sold: 1
   - icon: {fileID: 21300008, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
     name: Game 3
     description: Players control blocks falling from above and must stack them to
       build the tallest tower possible.
     cost: 200
+    sold: 1
   - icon: {fileID: 21300006, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
     name: Game 4
     description: Players control blocks falling from above and must stack them to
       build the tallest tower possible.
     cost: 300
+    sold: 0
   - icon: {fileID: 21300000, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
     name: Game 5
     description: Players control blocks falling from above and must stack them to
       build the tallest tower possible.
     cost: 300
+    sold: 0
   - icon: {fileID: 21300004, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
     name: Game 6
     description: Players control blocks falling from above and must stack them to
       build the tallest tower possible.
     cost: 400
+    sold: 0
   - icon: {fileID: 2657873270443967794, guid: 3da05e9f66c9f254c8875335e7e9179e, type: 3}
     name: Game 7
     description: Players control blocks falling from above and must stack them to
       build the tallest tower possible.
     cost: 1000
+    sold: 0

@@ -8,16 +8,28 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Computer.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 0
+    path: Assets/Scenes/LoadingScreen.unity
+    guid: 76a09bd9be2915542bebee0154d80419
   - enabled: 1
     path: Assets/Scenes/Minigame1.unity
     guid: d69c09aae4e7f63498ac5137a0666e24
   - enabled: 1
     path: Assets/Scenes/Minigame2.unity
     guid: 35e25525247eb81438479a2885b17630
-  - enabled: 0
-    path: Assets/Scenes/Minigame3.unity
-    guid: 3e1eeb3f687008545aa122cf2c2e7901
   - enabled: 1
-    path: Assets/Scenes/LoadingScreen.unity
-    guid: 76a09bd9be2915542bebee0154d80419
+    path: Assets/Scenes/Minigame3.unity
+    guid: 7c304ee56eee38845953e29eb532379b
+  - enabled: 1
+    path: Assets/Scenes/Minigame4.unity
+    guid: 9d38489867721134a89d6e2d90e1346c
+  - enabled: 1
+    path: Assets/Scenes/Minigame5.unity
+    guid: 98b7c2e5faed2ba43bf4ad5f3202abf5
+  - enabled: 1
+    path: Assets/Scenes/Minigame6.unity
+    guid: 2b83fd46f5dd6e642877f240d9cf4a38
+  - enabled: 1
+    path: Assets/Scenes/Minigame7.unity
+    guid: e58e685fcd0a3fe4bbfbbf0ad36c2946
   m_configObjects: {}

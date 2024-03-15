@@ -68,8 +68,7 @@ public class ComputerController : MonoBehaviour
     private Canvas _mainCanvas;
     
     private ApplicationIcons _currentApplicationIcons;
-    private int _lastMinigameIndex = 2;
-    private int _minigameAmount = 7;
+    private int _lastMinigameIndex;
 
     private int _money;
     public static ComputerController Instance { get; private set; }
@@ -86,7 +85,9 @@ public class ComputerController : MonoBehaviour
         _currentApplicationIcons = new ApplicationIcons();
 
         // This will change!
-        _money = 1000;
+        _money = 9999;
+
+        _lastMinigameIndex = _minigamesRenderTextures.Length - 1;
     }
 
     private void Start()
@@ -161,7 +162,7 @@ public class ComputerController : MonoBehaviour
             }
             else
             {
-                int index = desktopIcon.ApplicationID - _minigameAmount;
+                int index = desktopIcon.ApplicationID - _minigamesRenderTextures.Length; // index = ID - number of minigames
                 window = _windowsUI.GetApplicationWindow(index);
             }
 
