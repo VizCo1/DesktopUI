@@ -43,6 +43,7 @@ public class StoreWindow : Window
                 {
                     button.interactable = false;
                     UnlockMinigame(appID);
+                    SoundsManager.Instance.PlayUISound();
                 }
             });
         }

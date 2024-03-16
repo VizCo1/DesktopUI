@@ -74,7 +74,7 @@ public class BarUI : IconHolderSpace
 
     public void FixPositionsAndRemoveIcon(BarIcon icon)
     {
-        for (int i = 0; i < _barIconsList.Count; i++) // i = icon.Index
+        for (int i = 0; i < _barIconsList.Count; i++)
         {
             if (_barIconsList[i].Index > icon.Index)
             {

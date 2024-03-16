@@ -864,6 +864,7 @@ GameObject:
   - component: {fileID: 340449657657852212}
   - component: {fileID: 6796233297204896229}
   - component: {fileID: 7201668243786896592}
+  - component: {fileID: 1906804415451840120}
   m_Layer: 5
   m_Name: BarIcon
   m_TagString: Untagged
@@ -1009,6 +1010,19 @@ MonoBehaviour:
   _colorTintSO: {fileID: 11400000, guid: d61cdbc0da47f1c4aad8b13283bde160, type: 2}
   _spriteSwapSO: {fileID: 11400000, guid: a6128f982f784fd4c956e2c6115c28a2, type: 2}
   _animationSO: {fileID: 11400000, guid: a1e9a44896099674da4d1e17cc0d6a36, type: 2}
+--- !u!114 &1906804415451840120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4701578961917332923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c8d7e2655191e4d9ded6eb87a2dc6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _when: 1
 --- !u!1 &6269937669152502116
 GameObject:
   m_ObjectHideFlags: 0
