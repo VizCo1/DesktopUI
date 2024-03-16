@@ -1,4 +1,4 @@
-# MinigamesGame
+# Desktop UI
 
 Personal project in development.
 
