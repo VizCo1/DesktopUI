@@ -164,7 +164,7 @@ public class DesktopUI : IconHolderSpace
         }
     }
 
-    public override GameObject AddIcon(int applicationID, ApplicationIcon minigameIcon)
+    public override GameObject TryAddIcon(int applicationID, ApplicationIcon minigameIcon)
     {
         GameObject iconGO = Instantiate(_iconTemplate, _iconContainer);
         if (iconGO.TryGetComponent(out DesktopIcon desktopIcon))
@@ -247,6 +247,14 @@ public class DesktopUI : IconHolderSpace
             _iconPositions[index1].IsOccupied = true; // New pos is now OCCUPIED
             _iconPositions[index2].IsOccupied = false; // Previous pos is now FREE
         }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+        }
+        Debug.Log(_iconPositions[0].IsOccupied);
     }
 
     public bool IsClosestPositionFree(Vector2 position)

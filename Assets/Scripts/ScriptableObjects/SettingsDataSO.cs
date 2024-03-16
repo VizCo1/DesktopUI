@@ -64,7 +64,7 @@ public class SettingsDataSO : ScriptableObject, IOrderedInitialization
         SettingsEvents.VolumeUIChanged -= SettingsEvents_VolumeUIChanged;
     }
 
-    public void Initialize()
+    public void Initialize() // This is called in the Initializer Start()
     {
         LoadSettings();
         ApplySettings();        

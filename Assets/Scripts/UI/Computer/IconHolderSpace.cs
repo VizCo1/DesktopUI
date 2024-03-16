@@ -49,7 +49,7 @@ public class IconHolderSpace : MonoBehaviour
 
     protected virtual void OnDrawGizmos()
     {
-        bool debug = true;
+        bool debug = false;
 
         if (debug)
         {
@@ -91,7 +91,7 @@ public class IconHolderSpace : MonoBehaviour
 
     public Vector2 GetPosition(int index) => _iconPositions[index].Position;
 
-    public virtual GameObject AddIcon(int minigame, ApplicationIcon minigameIcon) { Debug.LogError("Function was not implemented"); return null; }
+    public virtual GameObject TryAddIcon(int minigame, ApplicationIcon minigameIcon) { Debug.LogError("Function was not implemented"); return null; }
     public virtual int FindProperIndex(Vector2 iconPos) { return default; }
 
     public void SetIconPositionStatusWithIndex(int index, bool setter) => _iconPositions[index].IsOccupied = setter;    

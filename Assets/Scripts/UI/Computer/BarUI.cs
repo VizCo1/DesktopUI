@@ -49,7 +49,7 @@ public class BarUI : IconHolderSpace
         }
     }
 
-    public override GameObject AddIcon(int applicationID, ApplicationIcon minigameIcon)
+    public override GameObject TryAddIcon(int applicationID, ApplicationIcon minigameIcon)
     {
         // Reuse or create new icon
         if (!_iconPool.TryDequeue(out GameObject iconGO))

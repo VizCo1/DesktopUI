@@ -1,11 +1,8 @@
-using DG.Tweening;
 using MoreMountains.Feedbacks;
 using System;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class ComputerController : MonoBehaviour
 {
@@ -111,14 +108,14 @@ public class ComputerController : MonoBehaviour
                 break;
             }
 
-            _desktopUI.AddIcon((int) applications, _applicationsIconInfoSO.applications[(int) applications]);
+            _desktopUI.TryAddIcon((int) applications, _applicationsIconInfoSO.applications[(int) applications]);
             i++;
         }
 
         // Store application
-        _desktopUI.AddIcon((int) ApplicationWindow.Store, _applicationsIconInfoSO.applications[(int)ApplicationWindow.Store]);
+        _desktopUI.TryAddIcon((int) ApplicationWindow.Store, _applicationsIconInfoSO.applications[(int)ApplicationWindow.Store]);
         // Settings application
-        _desktopUI.AddIcon((int) ApplicationWindow.Settings, _applicationsIconInfoSO.applications[(int)ApplicationWindow.Settings]);
+        _desktopUI.TryAddIcon((int) ApplicationWindow.Settings, _applicationsIconInfoSO.applications[(int)ApplicationWindow.Settings]);
     }
 
     #region Handle Icon Clicked
@@ -168,7 +165,7 @@ public class ComputerController : MonoBehaviour
 
             // Current app icons
             _currentApplicationIcons.DesktopIcon = desktopIcon;
-            _currentApplicationIcons.BarIcon = _barUI.AddIcon(desktopIcon.ApplicationID, 
+            _currentApplicationIcons.BarIcon = _barUI.TryAddIcon(desktopIcon.ApplicationID, 
                 _applicationsIconInfoSO.applications[desktopIcon.ApplicationID]).GetComponent<BarIcon>();
 
             // Add to dictionaries
@@ -334,7 +331,7 @@ public class ComputerController : MonoBehaviour
 
     public void AddMinigame(int appID)
     {
-        _desktopUI.AddIcon(appID, _applicationsIconInfoSO.applications[appID]);
+        _desktopUI.TryAddIcon(appID, _applicationsIconInfoSO.applications[appID]);
     }
 
     public Canvas GetMainCanvas() => _mainCanvas;
