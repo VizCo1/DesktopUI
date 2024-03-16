@@ -39,7 +39,7 @@ public class DesktopIcon : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoin
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (_desktopUI.IsClosestPositionFree(_rectTransform.position)) // This could be optimized
+        if (_desktopUI.IsClosestPositionFree(_rectTransform.position)) // This could be optimized but it isn't for clarity
         {
             FixIconPosition(_desktopUI.FindProperPosition(_rectTransform.position));
             _desktopUI.SwapIconPositionStatus(gameObject, _prevPos);

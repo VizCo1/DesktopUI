@@ -47,6 +47,8 @@ public class IconHolderSpace : MonoBehaviour
         return -1;
     }
 
+    // This is useful to visualize the possible positions, but should be deactivated when testing the game.
+    // If not, _iconPositions[index].IsOccupied will always be false
     protected virtual void OnDrawGizmos()
     {
         bool debug = false;
