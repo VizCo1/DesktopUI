@@ -66,8 +66,8 @@ public class SettingsDataSO : ScriptableObject, IOrderedInitialization
 
     public void Initialize() // This is called in the Initializer Start()
     {
-        LoadSettings();
-        ApplySettings();        
+        LoadSettingsOnStart();
+        ApplySettingsOnStart();        
     }
 
     public void InitializeSettings()
@@ -81,7 +81,7 @@ public class SettingsDataSO : ScriptableObject, IOrderedInitialization
 
     #region Load settings
 
-    private void LoadSettings()
+    private void LoadSettingsOnStart()
     {
         _currentResolution = PersistentSettingsManager.LoadResolution();
         _fullscreenMode = PersistentSettingsManager.LoadDisplayMode();
@@ -94,7 +94,7 @@ public class SettingsDataSO : ScriptableObject, IOrderedInitialization
 
     #region Apply settings
 
-    private void ApplySettings()
+    private void ApplySettingsOnStart()
     {
         //ApplyResolutionAndScreenMode(); No need to apply the first time
         ApplyTargetFrameRate();
