@@ -84,7 +84,7 @@ public class ComputerController : MonoBehaviour
         _mainCanvas = GetComponent<Canvas>();
         _currentApplicationIcons = new ApplicationIcons();
 
-        // This will change!
+        // Money for the store
         _money = 9999;
 
         _lastMinigameIndex = _minigamesRenderTextures.Length - 1;
