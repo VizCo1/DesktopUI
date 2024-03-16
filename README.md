@@ -1,6 +1,6 @@
 # Desktop UI
 
-Personal project in development.
+Personal project focused on making a functional desktop like prototype.
 
 You can see the video of the project here: [video](https://youtu.be/827fYIgjJ-8).
 
