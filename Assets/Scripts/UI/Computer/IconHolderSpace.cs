@@ -15,6 +15,22 @@ public class IconHolderSpace : MonoBehaviour
 
     protected IconPosition[] _iconPositions;
 
+    private void Start()
+    {
+        SettingsEvents.OnResolutionChanged += SettingsController_OnResolutionChanged;
+    }
+
+    private void OnDestroy()
+    {
+        SettingsEvents.OnResolutionChanged -= SettingsController_OnResolutionChanged;
+    }
+
+    private void SettingsController_OnResolutionChanged()
+    {
+        InitializeSpace();
+        FixAllIcons();
+    }
+
     public virtual void InitializeSpace() { }
 
     protected virtual void FixAllIcons() { }

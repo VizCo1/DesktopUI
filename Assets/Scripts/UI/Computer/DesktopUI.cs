@@ -1,5 +1,3 @@
-using DG.Tweening;
-using System;
 using UnityEngine;
 
 public class DesktopUI : IconHolderSpace
@@ -17,22 +15,6 @@ public class DesktopUI : IconHolderSpace
         _initialColumns = _columns;
         _initialSpacinY = _spacing.y;
         _initialIconHeight = _iconHeight;
-    }
-
-    private void Start()
-    {
-        SettingsEvents.OnResolutionChanged += SettingsController_OnResolutionChanged;
-    }
-
-    private void OnDestroy()
-    {
-        SettingsEvents.OnResolutionChanged -= SettingsController_OnResolutionChanged;
-    }
-
-    private void SettingsController_OnResolutionChanged()
-    {
-        InitializeSpace();
-        FixAllIcons();
     }
 
     public override void InitializeSpace()
@@ -247,14 +229,6 @@ public class DesktopUI : IconHolderSpace
             _iconPositions[index1].IsOccupied = true; // New pos is now OCCUPIED
             _iconPositions[index2].IsOccupied = false; // Previous pos is now FREE
         }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-        }
-        Debug.Log(_iconPositions[0].IsOccupied);
     }
 
     public bool IsClosestPositionFree(Vector2 position)

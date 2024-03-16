@@ -1,8 +1,5 @@
 using DG.Tweening;
-using System;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class MinigameControllerUI : MonoBehaviour
 {

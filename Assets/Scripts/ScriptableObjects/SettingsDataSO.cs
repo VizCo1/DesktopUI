@@ -96,7 +96,7 @@ public class SettingsDataSO : ScriptableObject, IOrderedInitialization
 
     private void ApplySettings()
     {
-        ApplyResolutionAndScreenMode();
+        //ApplyResolutionAndScreenMode(); No need to apply the first time
         ApplyTargetFrameRate();
         ApplyVSync();
         ApplyVolumeUI();
